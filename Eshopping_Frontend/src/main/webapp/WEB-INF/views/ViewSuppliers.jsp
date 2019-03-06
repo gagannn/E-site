@@ -12,6 +12,18 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <style>
+  .table-border{
+  border-right:1px solid white;
+  }
+  td{
+  border-right:1px solid white;
+  }
+  
+  body{
+  background-color:#f7f7f7 !important;
+  }
+  </style>
 </head>
 <body>
 	<!-- header -->
@@ -27,16 +39,16 @@
 	</c:if>
 	
 	
-	<table  class="table table-striped">
-		<tr>
-			<th>Supplier Name</th>
-			<th>Supplier Mobile</th>
-			<th>Supplier Address</th>
-			<th>Update</th>
-			<th>Delete</th>
+	<table  class="table table-striped text-center">
+		<tr style="background-color:black !important; color:white !important;">
+			<th class="table-border text-center">Supplier Name</th>
+			<th class="table-border text-center">Supplier Mobile</th>
+			<th class="table-border text-center">Supplier Address</th>
+			<th class="table-border text-center">Update</th>
+			<th class="text-center">Delete</th>
 		</tr>
 		<c:forEach items="${supplierList}" var="suppObj">
-			<tr>
+			<tr style="background-color:rgba(218,206,206,0.5) !important;">
 				<td>${suppObj.suppName}</td>
 				<td>${suppObj.suppMobile}</td>
 				<td>${suppObj.address}</td>
@@ -55,5 +67,6 @@
 		</c:forEach>
 	</table>
 	</div>
+	<jsp:include page="Footer.jsp" />
 </body>
 </html>

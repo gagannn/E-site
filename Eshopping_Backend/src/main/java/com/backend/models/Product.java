@@ -1,4 +1,4 @@
-package com.backend.models;
+ package com.backend.models;
 
 
 import javax.persistence.CascadeType;
@@ -26,11 +26,11 @@ public class Product {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int productId;
 	
-	@NotEmpty
+	@NotEmpty(message="Product name is mandatory")
 	private String productName;
-	@NotNull
+	@NotNull(message="Product price is mandatory")
 	private Double price;
-	@NotNull
+	@NotNull(message="Product quantity is mandatory")
 	private Integer quantity;
 	private String description;
 

@@ -1,6 +1,5 @@
 package com.backend.daos;
 
-
 import java.util.List;
 
 import javax.persistence.Query;
@@ -20,7 +19,7 @@ public class SupplierDaoImpl implements SupplierDao {
 
 	@Autowired
 	SessionFactory SessionFactory;
-	
+
 	public boolean addSupplier(Supplier supp) {
 		try {
 			Session session=SessionFactory.getCurrentSession();
@@ -28,7 +27,6 @@ public class SupplierDaoImpl implements SupplierDao {
 			return true;
 		}catch(Exception e)
 		{
-			
 			e.printStackTrace();
 		}
 		return false;
@@ -47,7 +45,7 @@ public class SupplierDaoImpl implements SupplierDao {
 	}
 
 	public boolean updateSupplier(Supplier supp) {
-	
+
 		try {
 			Session session=SessionFactory.getCurrentSession();
 			session.update(supp);
@@ -64,7 +62,6 @@ public class SupplierDaoImpl implements SupplierDao {
 			Session session=SessionFactory.getCurrentSession();
 			Supplier supp=(Supplier)session.get(Supplier.class, supplierId);
 			return supp;
-			
 		}catch(Exception e)
 		{
 			e.printStackTrace();
@@ -78,7 +75,6 @@ public class SupplierDaoImpl implements SupplierDao {
 			Query query=session.createQuery("from Supplier");
 			List<Supplier> list=query.getResultList();
 			return list;
-			
 		}catch(Exception e)
 		{
 			e.printStackTrace();

@@ -25,6 +25,7 @@ public class Item {
 	private Product product;
 	
 	@ManyToOne
+	@JoinColumn(name="cartId")
 	private Cart cart;
 
 	public int getItemId() {

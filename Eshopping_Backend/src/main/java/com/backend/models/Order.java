@@ -18,11 +18,11 @@ public class Order {
 	
 	@ManyToOne
 	@JoinColumn(name="email")
-	private User user; //one user can give multiple orders
+	private User user; 
 	
 	
 	@OneToOne
-	@JoinColumn(name="addressId")
+	@JoinColumn(name="id")
 	private Address address;
 
 

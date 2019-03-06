@@ -1,6 +1,9 @@
 package com.frontend.controllers;
 
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,11 +18,18 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.backend.daos.CategoryDao;
+import com.backend.daos.ProductDao;
 import com.backend.daos.UserDao;
+import com.backend.models.Category;
+import com.backend.models.Product;
 import com.backend.models.User;
+import com.backend.validators.LoginValidator;
 import com.backend.validators.MyPasswordValidator;
+import com.backend.validators.PhoneNoValidator;
 
 
 @Controller
@@ -29,16 +39,32 @@ public class UserController {
 	UserDao userDao;
 	
 	@Autowired
+	CategoryDao categoryDao;
+	
+	@Autowired
+	ProductDao productDao;
+	
+	@Autowired
 	private HttpServletRequest request;
 	
 	@Autowired
 	MyPasswordValidator myPasswordValidator;
+	
+	@Autowired
+	PhoneNoValidator phoneNoValidator;
+	
+	@Autowired
+	LoginValidator loginValidator;
 	
 	@RequestMapping(value="getSignupForm",method=RequestMethod.GET)
 	public ModelAndView signupForm()
 	{
 		User u=new User();
 		ModelAndView mv=new ModelAndView("SignupForm");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("key1",u);
 		mv.addObject("btnLabel","Signup");
 		mv.addObject("formLabel","User Signup");
@@ -48,6 +74,7 @@ public class UserController {
 	@RequestMapping(value="signupUser",method=RequestMethod.POST)
 	public ModelAndView registerUser(@Valid@ModelAttribute("key1")User u, BindingResult result) {
 		myPasswordValidator.validate(u, result);
+		phoneNoValidator.validate(u, result);
 		if(result.hasErrors()){
 			ModelAndView mv=new ModelAndView("SignupForm");
 			mv.addObject("key1",u);
@@ -61,6 +88,16 @@ public class UserController {
 		if(r)
 		{
 			ModelAndView mv=new ModelAndView("HomePage");
+			List<Category> categories=categoryDao.getAllCategories();
+			mv.addObject("categoriesList",categories);
+			List<Category> threeCategories=categoryDao.threeCategories();
+			mv.addObject("threeCategories",threeCategories);
+			Map<Category,Product> threeRandomProducts=productDao.threeRandomProducts(threeCategories);
+			mv.addObject("threeRandomProducts", threeRandomProducts);
+			List<Product> products=productDao.getAllProducts();
+			mv.addObject("productsList",products);
+			List<Product> fourProducts=productDao.get4ProductFromEachCategory(categories);
+			mv.addObject("fourProducts",fourProducts);
 			mv.addObject("message","User Added Succesfully...");
 			return mv;
 			
@@ -82,19 +119,37 @@ public class UserController {
 		return mv;
 	}
 	
-	/*@RequestMapping(value="getLoginForm",method=RequestMethod.GET)
-	public ModelAndView loginForm()
+	@RequestMapping(value="login",method=RequestMethod.GET)
+	public ModelAndView loginForm(@RequestParam(name="error",required=false)String error)
 	{
+		
 		User u=new User();
 		ModelAndView mv=new ModelAndView("LoginForm");
-		mv.addObject("key1",u);
-		mv.addObject("btnLabel","Login");
-		mv.addObject("formLabel","User Login");
+		if(error!=null) {
+			mv.addObject("msg","Email or Password is incorrect...");
+		}
+		//List<Category> categories=categoryDao.getAllCategories();
+		//mv.addObject("categoriesList",categories);
+		//List<Product> products=productDao.getAllProducts();
+		//mv.addObject("productsList",products);
+		
+		//mv.addObject("key1",u);
+		//mv.addObject("btnLabel","Login");
+		//mv.addObject("formLabel","User Login");
 		return mv;
 	}
 	
 	@RequestMapping(value="loginUser",method=RequestMethod.POST)
-	public ModelAndView validateUser(@ModelAttribute("key1")User u) {
+	public ModelAndView validateUser(@Valid@ModelAttribute("key1")User u, BindingResult result) {
+		loginValidator.validate(u, result);
+		if(result.hasErrors()){
+			ModelAndView mv=new ModelAndView("LoginForm");
+			mv.addObject("key1",u);
+			mv.addObject("btnLabel","Login");
+			mv.addObject("message","Login credentials invalid");
+			mv.addObject("formLabel","User Login");
+			return mv;
+		}
 		User r=userDao.validateUser(u);
 		if(r!=null)
 		{
@@ -111,7 +166,7 @@ public class UserController {
 			mv.addObject("key1",u);
 			return mv;
 		}
-	}*/
+	}
 	@RequestMapping(value="logoutUser",method=RequestMethod.GET)
 	public String logout(HttpServletRequest request,HttpServletResponse response) {
 		

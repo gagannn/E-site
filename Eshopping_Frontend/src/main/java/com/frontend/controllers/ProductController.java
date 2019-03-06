@@ -2,6 +2,7 @@ package com.frontend.controllers;
 
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.backend.models.Category;
 import com.backend.models.Product;
 import com.backend.models.Supplier;
 import com.backend.validators.CategoryValidator;
+import com.backend.validators.ProductImageValidator;
 
 @Controller
 public class ProductController {
@@ -41,10 +43,16 @@ public class ProductController {
 	SupplierDao supplierDao;
 	
 	@Autowired
+	HttpSession session;
+	
+	@Autowired
 	private HttpServletRequest request;
 	
 	@Autowired
 	CategoryValidator categoryValidator;
+	
+	@Autowired
+	ProductImageValidator productImageValidator;
 	
 	//@Autowired
 	//SessionFactory SessionFactory;
@@ -54,6 +62,10 @@ public class ProductController {
 		Product  productObj=new Product();
 		
 		ModelAndView mv=new ModelAndView("ProductForm");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("key1",productObj);
 		mv.addObject("btnLabel","Add Product");
 		mv.addObject("formLabel","Add Product Form");
@@ -67,29 +79,42 @@ public class ProductController {
 	@RequestMapping(value="submitProduct",method=RequestMethod.POST)
 	public ModelAndView addProduct(@Valid@ModelAttribute("key1")Product prod,BindingResult result){
 		categoryValidator.validate(prod, result);
+		//productImageValidator.validate(prod, result);
+		if(prod.getProductId()==0) {
+			productImageValidator.validate(prod, result);
+		}
+		ModelAndView mv=null;
 		if(result.hasErrors()) {
 		
-			ModelAndView mv=new ModelAndView("ProductForm");
+			mv=new ModelAndView("ProductForm");
+			List<Category> categories=categoryDao.getAllCategories();
+			mv.addObject("categoriesList",categories);
+			List<Product> products=productDao.getAllProducts();
+			mv.addObject("productsList",products);
 			
 			List<Category> catList=categoryDao.getAllCategories();
 			List<Supplier> sList=supplierDao.getAllSuppliers();
-			
+			mv.addObject("key1",prod);
 			mv.addObject("catObj",catList);
 			mv.addObject("suppObj",sList);
 			mv.addObject("formLabel","Add Product Form");
 			mv.addObject("btnLabel","Add Product");
 			return mv;
 		}
-		else {
+		
 			
 		
 		System.out.println("Product Obj = "+prod);
-		ModelAndView mv=new ModelAndView("ViewProducts");
+		mv=new ModelAndView("ViewProducts");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		
 		if(prod.getProductId()==0)
 		{
 			
-			HttpSession session=request.getSession();
+			//HttpSession session=request.getSession();
 				
 			String filePathString = session.getServletContext().getRealPath("/");
 			System.out.println("filePathString : "+filePathString);
@@ -109,40 +134,60 @@ public class ProductController {
 			prod.setImgname1(fileName);
 			//productObj.setImgName2(fileName2);
 
-			productDao.addProduct(prod);
+			//productDao.addProduct(prod);
 			
-			try{
-				
-				byte[] imageBytes=prod.getPimage1().getBytes();
-				FileOutputStream fos=new FileOutputStream(filePathString+"/resources/images/"+fileName);
-				BufferedOutputStream bos= new BufferedOutputStream(fos);
-				bos.write(imageBytes);
-				bos.close();
-				
-				//byte[] imageByte=prod.getPimage2().getBytes();
-				//FileOutputStream foss=new FileOutputStream(filePathString+"/resources/images/"+fileName2);
-				//BufferedOutputStream boss= new BufferedOutputStream(foss);
-				//boss.write(imageByte);
-				//boss.close();
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			mv.addObject("msg","Product Added Successfully");
+			uploadImage(prod,filePathString,fileName);
+			productDao.addProduct(prod);
+			mv.addObject("message","Product Added Successfully");
 		
 			
 		}
 		else
 		{
-			mv.addObject("messsage","Product Updated Successfully");
-			productDao.updateProduct(prod);
+			if(prod.getPimage1().getSize()==0) {
+				Product pro=productDao.getProductById(prod.getProductId());
+				String img=pro.getImgname1();
+				prod.setImgname1(img);
+				productDao.updateProduct(prod);
+			}
+			else 
+			{
+				String filePathString = session.getServletContext().getRealPath("/");
+				String fileName= prod.getPimage1().getOriginalFilename();
+				prod.setImgname1(fileName);
+				productDao.updateProduct(prod);
+				//System.out.println("Hey here is size of file"+product.getPimage1().getContentType()+" "+product.getPimage1().getSize());
+				uploadImage(prod, filePathString,fileName);
+			}
 		}
-		//List<Category> categoryList=categoryDao.getAllCategories();
-		//mv.addObject("catObj",categoryList);
-		List<Product> pList=productDao.getAllProducts();
-		mv.addObject("productsList", pList);
-		return mv;}
+	//List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("catObj",categories);
+		//mv.addObject("title","Update Product");
+		//mv.addObject("saveBtn", "Update");
+		List<Product> list = productDao.getAllProducts();
+		mv.addObject("productsList", list);
+		return mv;
+	}
+	
+	
+	public void uploadImage(Product product,String filePathString,String fileName) {
+		try{
+			byte[] imageBytes=product.getPimage1().getBytes();
+			String str=filePathString+"resources\\images\\";
+			System.out.println(str);
+			File file=new File(str);
+			if(!file.exists()) {
+				file.mkdirs();
+			}
+			FileOutputStream fos=new FileOutputStream(filePathString+"resources\\images\\"+fileName);
+			BufferedOutputStream bos= new BufferedOutputStream(fos);
+			bos.write(imageBytes);
+			bos.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	@RequestMapping(value="getAllProducts",method=RequestMethod.GET)
@@ -151,6 +196,10 @@ public class ProductController {
 		List<Product> products=productDao.getAllProducts();
 		System.out.println(products);
 		ModelAndView mv=new ModelAndView("ViewProducts");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		//List<Product> products=productDao.getAllProducts();
+		//mv.addObject("productsList",products);
 		mv.addObject("productsList",products);
 		return mv;
 	}
@@ -162,10 +211,31 @@ public class ProductController {
 		productDao.deleteProduct(obj);
 		
 		ModelAndView mv=new ModelAndView("ViewProducts");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("message","Product Deleted Succesfully...");
 		mv.addObject("productsList",productDao.getAllProducts());
 		return mv;
 	}
+	
+	@RequestMapping(value="getProductsByCategory/{categoryId}",method=RequestMethod.GET)
+	public ModelAndView byCategory(@PathVariable("categoryId")int id){
+		ModelAndView mv = new ModelAndView("ViewProducts");
+		List<Product> list=productDao.viewAllProductByCategoryId(id);
+	System.out.println("CatId: "+id);
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		mv.addObject("productsList", list);
+		mv.addObject("CatName",categoryDao.getCategory(id).getCategoryName());
+		System.out.println("CatId: "+id);
+		System.out.println("Products: "+list);
+		return mv;
+	
+	
+	}
+	
 	@RequestMapping(value="editProduct/{pId}",method=RequestMethod.GET)
 	public ModelAndView edit(@PathVariable("pId")int prodId){
 		
@@ -175,8 +245,13 @@ public class ProductController {
 		List<Category> categoryList=categoryDao.getAllCategories();
 		mv.addObject("catObj",categoryList);
 		List<Supplier> supplierList=supplierDao.getAllSuppliers();
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("suppObj",supplierList);
 		mv.addObject("key1",obj);
+		mv.addObject("productObj",obj);
 		mv.addObject("btnLabel","Edit Product");
 		mv.addObject("formLabel","Edit Product Form");
 		mv.addObject("op","Edit");

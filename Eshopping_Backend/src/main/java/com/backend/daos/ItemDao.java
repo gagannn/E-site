@@ -12,4 +12,6 @@ public interface ItemDao {
 	public List<Item> getItemsListByCart(int cartId);
 	public boolean increaseQuantity(int itemId);
 	public boolean decreaseQuantity(int itemId);
+	public Item getItemByItemId(int id);
+	public Double getTotalPrice(int id);
 }

@@ -16,7 +16,6 @@ public class OrderDaoImpl implements OrderDao {
 	@Autowired
 	SessionFactory SessionFactory;
 	
-	
 	@Override
 	public int makeOrder(Order order) {
 		try{

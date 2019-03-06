@@ -1,9 +1,7 @@
 package com.backend.daos;
 
 import java.util.List;
-
 import com.backend.models.User;
-
 
 public interface UserDao {
 	public boolean registerUser(User userObj);

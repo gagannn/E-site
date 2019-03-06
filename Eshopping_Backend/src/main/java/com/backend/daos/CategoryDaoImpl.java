@@ -1,5 +1,6 @@
 package com.backend.daos;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -74,6 +75,22 @@ public class CategoryDaoImpl implements CategoryDao{
 			Query query=session.createQuery("from Category");
 			List<Category> list=query.getResultList();
 			return list;
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
+	}
+
+	@Override
+	public List<Category> threeCategories() {
+		try{
+			Session session=SessionFactory.getCurrentSession();
+			Query query=session.createQuery("from Category");
+			List<Category> list=query.getResultList();
+			Collections.shuffle(list);
+			List<Category> threeCategory=list.subList(0, 3);
+			return threeCategory;
 			}
 			catch(Exception e){
 				e.printStackTrace();

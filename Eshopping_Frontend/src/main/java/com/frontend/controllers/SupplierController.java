@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.backend.daos.CategoryDao;
+import com.backend.daos.ProductDao;
 import com.backend.daos.SupplierDao;
-
+import com.backend.models.Category;
+import com.backend.models.Product;
 import com.backend.models.Supplier;
 
 @Controller
@@ -24,11 +27,22 @@ public class SupplierController {
 	@Autowired
 	SupplierDao supplierDao;
 	
+	@Autowired
+	ProductDao productDao;
+	
+	@Autowired
+	CategoryDao categoryDao;
+	
+	
 	@RequestMapping(value="getSupplierForm",method=RequestMethod.GET)
 	public ModelAndView supplierForm() {
 		
 		Supplier supp=new Supplier();
 		ModelAndView mv=new ModelAndView("SupplierForm");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("key1",supp);
 		mv.addObject("btnLabel","Add Supplier");
 		mv.addObject("formLabel","Add Supplier Form");
@@ -40,6 +54,10 @@ public class SupplierController {
 		if(result.hasErrors()) {
 			
 			ModelAndView mv=new ModelAndView("SupplierForm");
+			List<Category> categories=categoryDao.getAllCategories();
+			mv.addObject("categoriesList",categories);
+			List<Product> products=productDao.getAllProducts();
+			mv.addObject("productsList",products);
 			mv.addObject("key1",supp);
 			mv.addObject("btnLabel","Add Supplier");
 			mv.addObject("formLabel","Add Supplier Form");
@@ -49,6 +67,10 @@ public class SupplierController {
 			
 		
 		ModelAndView mv=new ModelAndView("ViewSuppliers");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		if(supp.getSupplierId()==0) {
 			supplierDao.addSupplier(supp);
 			mv.addObject("message","Supplier Added Succesfully...");
@@ -70,6 +92,10 @@ public class SupplierController {
 		List<Supplier> suppliers=supplierDao.getAllSuppliers();
 		
 		ModelAndView mv=new ModelAndView("ViewSuppliers");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("supplierList",suppliers);
 		return mv;
 	}
@@ -81,8 +107,12 @@ public class SupplierController {
 		supplierDao.deleteSupplier(obj);
 		
 		ModelAndView mv=new ModelAndView("ViewSuppliers");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("message","Supplier Deleted Succesfully...");
-		mv.addObject("suppliersList",supplierDao.getAllSuppliers());
+		mv.addObject("supplierList",supplierDao.getAllSuppliers());
 		return mv;
 	}
 	@RequestMapping(value="editSupplier/{sId}",method=RequestMethod.GET)
@@ -91,6 +121,10 @@ public class SupplierController {
 		Supplier obj=supplierDao.getSupplier(suppId);
 		
 		ModelAndView mv=new ModelAndView("SupplierForm");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("key1",obj);
 		mv.addObject("btnLabel","Edit Supplier");
 		mv.addObject("formLabel","Edit Supplier Form");

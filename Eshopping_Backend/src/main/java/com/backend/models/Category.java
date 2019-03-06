@@ -23,7 +23,7 @@ public class Category {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int categoryId;
 	
-	@NotEmpty
+	@NotEmpty(message="Category name is mandatory")
 	private String categoryName;
 	
 	@Column(name="Description")
@@ -32,6 +32,12 @@ public class Category {
 	@OneToMany(mappedBy="category",cascade=CascadeType.REMOVE,fetch=FetchType.EAGER)
 	private Set<Product> products=new HashSet<Product>();
 	
+	public Set<Product> getProducts() {
+		return products;
+	}
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
 	public int getCategoryId() {
 		return categoryId;	
 	}

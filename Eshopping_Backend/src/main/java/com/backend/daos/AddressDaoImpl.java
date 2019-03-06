@@ -2,6 +2,7 @@ package com.backend.daos;
 
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
@@ -20,76 +21,76 @@ public class AddressDaoImpl implements AddressDao {
 
 	@Autowired
 	SessionFactory SessionFactory;
-	
+
 	@Override
 	public boolean insertAddress(Address address) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-		session.save(address);
-		return true;
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	return false;
+			session.save(address);
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public Address getAddressById(int addressId) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-		Address obj=(Address)session.get(Address.class, addressId);
+			Address obj=(Address)session.get(Address.class, addressId);
 
-		return obj;
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	return null;
+			return obj;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
 	public boolean updateAddress(Address address) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-	
-		session.update(address);
-		return true;
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	return false;
+
+			session.update(address);
+			
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public boolean deleteAddress(Address address) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-		
-		session.delete(address);
-		return true;
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	return false;
+
+			session.delete(address);
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public List<Address> getAddressForUser(String customerId) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-		Criteria c=session.createCriteria(Address.class);
-		c.add(Restrictions.eq("id",Integer.parseInt(customerId)));
-		List<Address> cList=c.list();
-		//System.out.println(cList);
-			return cList;
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	return null;
+			Query q = session.createQuery("from Address where userObj.email=:x");
+			q.setParameter("x",customerId);
+			List<Address> list =q.getResultList();
+			return list;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

@@ -1,74 +1,92 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>E-site</title>
 <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+.card-img-top {
+	height: 220px;
+}
+
+.card {
+	margin-bottom: 25px;
+	width: auto !important;
+}
+</style>
 </head>
 <body>
 	<!-- header -->
-	<jsp:include page="header.jsp"/>
-	
+	<jsp:include page="header.jsp" />
+
 	<!-- body -->
 	<div class="container">
+		<c:if test="${not empty CatName}">
+		<h1>${CatName}</h1>
+		
+		</c:if>
+		<c:if test="${not empty message}">
+			<div class="alert alert-success">${message}</div>
+		</c:if>
+		<div class="container">
+			<div class="row">
+				<c:forEach items="${productsList}" var="prodObj">
+					<div class="col-md-3">
+						<div class="card" style="width: 18rem;">
+							<img
+								src="${pageContext.request.contextPath}/resources/images/${prodObj.imgname1}"
+								class="card-img-top" alt="...">
+							<div class="card-body">
+								<h5 class="card-title text-center">${prodObj.productName}</h5>
+								<p class="card-text text-right">${prodObj.price}</p>
+								<div class="text-right">
+								<sec:authorize access="hasAuthority('Role_Admin')">
+									<a href="${contextRoot}/editProduct/${prodObj.productId}">
+										<span class="glyphicon glyphicon-edit"></span>
+									</a> <a href="${contextRoot}/deleteProduct/${prodObj.productId}">
+										<span class="glyphicon glyphicon-trash"></span>
+								
+									</a>
+									</sec:authorize> 
+									<sec:authorize access="hasAuthority('Role_User')">
+									<a href="${contextRoot}/addToCart/${prodObj.productId}"><i class="fa fa-shopping-cart icon"></i>
+									<!-- <span
+										class="glyphicon glyphicon-ok"></span>  --></a>
+										</sec:authorize>
+									<sec:authorize access="isAnonymous()">
+									<a href="${contextRoot}/addToCart/${prodObj.productId}"><i class="fa fa-shopping-cart icon"></i>
+									<!-- <span
+										class="glyphicon glyphicon-ok"></span>  --></a>
+									</sec:authorize>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+		</div>
+</div>
+
+
+		
+
+
+
+<jsp:include page="Footer.jsp" />
 	
-	<c:if test="${not empty message}">	
-	<div class="alert alert-success">
-	${message}
-	</div>
-	</c:if>
-	
-	
-	<table  class="table table-striped">
-		<tr>
-			<th>Name</th>
-			<th>Price</th>
-			<th>Quantity</th>
-			<th>Description</th>
-			<th>Category</th>
-			<th>Supplier</th>
-			<th>Image</th>
-			<th>Update</th>
-			<th>Delete</th>
-			<th>Add to Cart</th>
-		</tr>
-		<c:forEach items="${productsList}" var="prodObj">
-			<tr>
-				<td>${prodObj.productName}</td>
-				<td>${prodObj.price}</td>
-				<td>${prodObj.quantity}</td>
-				<td>${prodObj.description}</td>
-				<td>${prodObj.categoryId}</td>
-				<td>${prodObj.supplierId}</td>
-				<td><img src="${pageContext.request.contextPath}/resources/images/${prodObj.imgname1}"/></td>
-				<td>
-				<a href="${contextRoot}/editProduct/${prodObj.productId}">
-          				<span class="glyphicon glyphicon-edit"></span>
-        			</a>
-				</td>
-				<td>
-					
-        		<a href="${contextRoot}/deleteProduct/${prodObj.productId}">
-          				<span class="glyphicon glyphicon-trash"></span>
-        			</a>
-				</td>
-				<td>
-					
-        		<a href="${contextRoot}/addToCart/${prodObj.productId}">
-          				<span class="glyphicon glyphicon-ok"></span>
-        			</a>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-	</div>
 </body>
 </html>

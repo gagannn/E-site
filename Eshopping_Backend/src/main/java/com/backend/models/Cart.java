@@ -20,11 +20,7 @@ public class Cart {
 	@GeneratedValue(strategy=GenerationType.AUTO)
      private int cartId;
 	private String customerId;
-	
-	@OneToOne
-	private User user;
-
-	
+		
 	@OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.EAGER,mappedBy="cart")
 	Collection<Item> items=new ArrayList<>();
 
@@ -49,14 +45,7 @@ public class Cart {
 	}
 
 
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+	
 
 
 	public Collection<Item> getItems() {

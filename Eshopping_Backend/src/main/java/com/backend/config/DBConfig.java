@@ -24,7 +24,12 @@ import com.backend.models.Order;
 import com.backend.models.Product;
 import com.backend.models.Supplier;
 import com.backend.models.User;
+import com.backend.validators.CategoryValidator;
+import com.backend.validators.LoginValidator;
 import com.backend.validators.MyPasswordValidator;
+import com.backend.validators.PhoneNoValidator;
+import com.backend.validators.ProductImageValidator;
+import com.backend.validators.SupplierValidator;
 
 
 
@@ -65,8 +70,13 @@ public class DBConfig {
 		sb.addAnnotatedClass(MyPasswordValidator.class);
 		sb.addAnnotatedClass(Cart.class);
 		sb.addAnnotatedClass(Address.class);
+		sb.addAnnotatedClass(LoginValidator.class);
 		sb.addAnnotatedClass(Item.class);
 		sb.addAnnotatedClass(Order.class);
+		sb.addAnnotatedClass(PhoneNoValidator.class);
+		sb.addAnnotatedClass(ProductImageValidator.class);
+		sb.addAnnotatedClass(SupplierValidator.class);
+		sb.addAnnotatedClass(CategoryValidator.class);
 		return sb.buildSessionFactory();
 	}
 	

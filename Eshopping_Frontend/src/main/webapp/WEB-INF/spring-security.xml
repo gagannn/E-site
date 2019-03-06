@@ -12,24 +12,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 	<http pattern="/resources/**" security="none"/>
 	
-	<http>
-    	<intercept-url pattern="/addToCart/**"
-     access="hasAuthority('Role_Admin')"/>
-     <form-login/>
-      <access-denied-handler error-page="/access-denied"/>
-   
-     
-    <!-- <form-login login-page="/login" username-parameter="email" password-parameter="password" login-processing-url="/log"/>
-    <access-denied-handler error-page="/access-denied"/>
-     --><!-- <logout delete-cookies="true" logout-url="/perform-logout" logout-success-url="/"/> -->
-    <!-- <csrf/>
-     -->
-    <!-- <headers>
-    	<cache-control/>
-    	<hsts/>
-    </headers> -->
-  	</http>
-  	
+<http use-expressions="true" auto-config="true">
+		<intercept-url pattern="/addToCart/**"
+			access="hasAuthority('Role_User')" />  
+		<form-login login-page="/login" username-parameter="ssoId"
+			password-parameter="password"
+			authentication-failure-url="/errorPage" />
+		<csrf />
+		<access-denied-handler
+			error-page="/access-denied" />
+		<!-- enable remember me -->
+		<remember-me token-validity-seconds="1209600"
+			remember-me-parameter="remember-me" data-source-ref="dataSource" />
+	</http>
+	  	
  
  	<authentication-manager>
   	 <authentication-provider>

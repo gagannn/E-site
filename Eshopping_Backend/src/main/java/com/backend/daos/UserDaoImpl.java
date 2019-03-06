@@ -1,18 +1,14 @@
 package com.backend.daos;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import javax.transaction.Transactional;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-
 import com.backend.models.User;
 
 
@@ -22,7 +18,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Autowired
 	SessionFactory SessionFactory;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -40,23 +36,30 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	public User validateUser(User u) {
-		Session session=SessionFactory.getCurrentSession();
-		User obj=(User)session.get(User.class,u.getEmail());
-
-		if(obj.getPassword().equals(u.getPassword()))
-		{
-			return obj;
+		try{
+			Session session=SessionFactory.getCurrentSession();
+			User obj=(User)session.get(User.class,u.getEmail());
+			if(obj.getPassword().equals(u.getPassword()))
+			{
+				return obj;
+			}
+			return null;
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-
 		return null;
 	}
 
 	@Override
 	public User getUser(String email) {
-		Session session=SessionFactory.getCurrentSession();
-		User obj=(User)session.get(User.class,email);
-		if(obj!=null)
-			return obj;
+		try{
+			Session session=SessionFactory.getCurrentSession();
+			User obj=(User)session.get(User.class,email);
+			if(obj!=null)
+				return obj;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

@@ -12,6 +12,18 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  .table-border{
+  border-right:1px solid white;
+  }
+  td{
+  border-right:1px solid white;
+  }
+  
+  body{
+  background-color:#f7f7f7 !important;
+  }
+  </style>
 </head>
 <body>
 	<!-- header -->
@@ -27,15 +39,15 @@
 	</c:if>
 	
 	
-	<table  class="table table-striped">
-		<tr>
-			<th>Category Name</th>
-			<th>Category Description</th>
-			<th>Update</th>
-			<th>Delete</th>
+	<table  class="table table-striped text-center">
+		<tr style="background-color:black !important; color:white !important;">
+			<th class="table-border text-center">Category Name</th>
+			<th class="table-border text-center">Category Description</th>
+			<th class="table-border text-center">Update</th>
+			<th class="text-center">Delete</th>
 		</tr>
 		<c:forEach items="${categoriesList}" var="catObj">
-			<tr>
+			<tr style="background-color:rgba(218,206,206,0.5) !important;">
 				<td>${catObj.categoryName}</td>
 				<td>${catObj.categoryDescription}</td>
 				<td>
@@ -53,5 +65,6 @@
 		</c:forEach>
 	</table>
 	</div>
+	<jsp:include page="Footer.jsp" />
 </body>
 </html>

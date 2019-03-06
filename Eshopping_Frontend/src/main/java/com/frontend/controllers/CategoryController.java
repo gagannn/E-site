@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.backend.daos.CategoryDao;
+import com.backend.daos.ProductDao;
 import com.backend.models.Category;
+import com.backend.models.Product;
 
 
 @Controller
@@ -23,12 +25,19 @@ public class CategoryController {
 	@Autowired
 	CategoryDao categoryDao;
 	
+	@Autowired
+	ProductDao productDao;
+	
 	
 	@RequestMapping(value="getCategoryForm",method=RequestMethod.GET)
 	public ModelAndView categoryForm(){
 		Category categoryObj=new Category();
 		
 		ModelAndView mv=new ModelAndView("CategoryForm");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("key1",categoryObj);
 		mv.addObject("btnLabel","Add Category");
 		mv.addObject("formLabel","Add Category Form");
@@ -41,6 +50,10 @@ public class CategoryController {
 			
 			
 			ModelAndView mv=new ModelAndView("CategoryForm");
+			List<Category> categories=categoryDao.getAllCategories();
+			mv.addObject("categoriesList",categories);
+			List<Product> products=productDao.getAllProducts();
+			mv.addObject("productsList",products);
 			mv.addObject("key1",cat);
 			mv.addObject("btnLabel","Add Category");
 			mv.addObject("formLabel","Add Category Form");
@@ -61,7 +74,10 @@ public class CategoryController {
 		}
 		
 		
-		
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("categoriesList",categoryDao.getAllCategories());
 		return mv;}
 	}
@@ -93,6 +109,10 @@ public class CategoryController {
 		Category obj=categoryDao.getCategory(catId);
 		
 		ModelAndView mv=new ModelAndView("CategoryForm");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		mv.addObject("key1",obj);
 		mv.addObject("btnLabel","Edit Category");
 		mv.addObject("formLabel","Edit Category Form");

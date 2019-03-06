@@ -1,7 +1,15 @@
  	package com.backend.models;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
@@ -21,7 +29,7 @@ public class User {
 	@Email(message="Email must include @ and .")
 	private String email;
 	
-
+	//@NotEmpty(message="Password is mandatory")
 	private String password;
 	
 	public String getPassword2() {
@@ -38,12 +46,23 @@ public class User {
 	private String firstName;
 	private String lastName;
 	
-	@NotEmpty(message="Mobile Number is mandatory")
-	@Size(min=10,max=10,message="Mobile Number must be of 10 digits")
+	//@NotEmpty(message="Mobile Number is mandatory")
+	//@Size(min=10,max=10,message="Mobile Number must be of 10 digits")
 	private String mobileNo;
 	
 	private boolean enabled;
-	
+ 
+	@OneToMany(mappedBy="userObj",cascade=CascadeType.REMOVE,fetch=FetchType.EAGER)
+	private List<Address> address=new ArrayList<>();
+
+	public List<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<Address> address) {
+		this.address = address;
+	}
+
 	public boolean isEnabled() {
 		return enabled;
 	}
