@@ -86,7 +86,8 @@ public class PageController {
 		return "ErrorPage";
 		
 	}
-	
+		
+
 	@RequestMapping(value="/errorPage",method=RequestMethod.GET)
 	public String getErrorPage(){
 		return "redirect:/login?error";

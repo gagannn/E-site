@@ -159,7 +159,7 @@
             <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
         </div>
     </f:form>
-	<div class="hint-text"><span style="color:white">Already have an account?</span> <a href="${contextRoot}/getLoginForm">Login here</a></div>
+	<div class="hint-text"><span style="color:white">Already have an account?</span> <a href="${contextRoot}/login">Login here</a></div>
 </div>
 </div>
 <jsp:include page="Footer.jsp" />

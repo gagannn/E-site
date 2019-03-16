@@ -2,28 +2,42 @@ package com.frontend.controllers;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.backend.daos.AddressDao;
 import com.backend.daos.CartDao;
 import com.backend.daos.CategoryDao;
 import com.backend.daos.ItemDao;
+import com.backend.daos.OrderDao;
+import com.backend.daos.OrderItemsDao;
+import com.backend.daos.PaymentDao;
 import com.backend.daos.ProductDao;
+import com.backend.daos.UserDao;
+import com.backend.models.Address;
 import com.backend.models.Cart;
 import com.backend.models.Category;
 import com.backend.models.Item;
+import com.backend.models.Order;
+import com.backend.models.OrderItems;
+import com.backend.models.Payment;
 import com.backend.models.Product;
+import com.backend.validators.PaymentValidator;
 
 @Controller
 public class CartController {
@@ -41,16 +55,29 @@ public class CartController {
 	
 	@Autowired
 	CategoryDao categoryDao;
+	
+	@Autowired
+	UserDao userDao;
 
 	@Autowired
 	ProductDao productDao;
 	
-	/*static String userEmail;
+	@Autowired
+	OrderItemsDao orderItemsDao;
 	
-	@ModelAttribute
-	public void addAttributes(Model model) {
-		
-	}*/
+	@Autowired
+	OrderDao orderDao;
+	
+	@Autowired
+	AddressDao addressDao;
+	
+	@Autowired
+	PaymentDao paymentDao;
+	
+	@Autowired
+	PaymentValidator paymentValidator;
+	
+	static Address a;
 
 	@RequestMapping(value="/addToCart/{pId}",method=RequestMethod.GET)
 	public String addToCart(@PathVariable int pId) {
@@ -226,9 +253,96 @@ public class CartController {
 			double d=itemDao.getTotalPrice(cartObj.getCartId());
 			mv.addObject("TotalPrice",d);
 			return mv;
+		}	
+	}
+	
+	@RequestMapping(value="/addToCart/payment/{id}",method=RequestMethod.GET)
+	public ModelAndView getPayment(@PathVariable("id")int pId){
+		a=addressDao.getAddressById(pId);
+		Payment pay=new Payment();
+		ModelAndView mv=new ModelAndView("Payment");
+		mv.addObject("key1",pay);
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
+		Principal p=request.getUserPrincipal();
+		String userEmail=p.getName();
+		Cart cartObj=cartDao.getCartByCustomer(userEmail);
+		Collection<Item> items=cartObj.getItems();
+		mv.addObject("itemsList",items);
+		double d=itemDao.getTotalPrice(cartObj.getCartId());
+		mv.addObject("TotalPrice",d);
+		int size=0;
+		for(Item item:items){
+			size=size+item.getQuantity();
 		}
+		mv.addObject("items",size);
+		
+		return mv;	
+	}
+	
+	
+	@RequestMapping(value="/addToCart/payment/placeOrder",method=RequestMethod.POST)
+	public ModelAndView placeOrder(@Valid@ModelAttribute("key1")Payment pp,BindingResult result){
+		paymentValidator.validate(pp, result);
+		if(result.hasErrors()) {
+			ModelAndView mv=new ModelAndView("Payment");
+			mv.addObject("key1",pp);
+			List<Category> categories=categoryDao.getAllCategories();
+			mv.addObject("categoriesList",categories);
+			List<Product> products=productDao.getAllProducts();
+			mv.addObject("productsList",products);
+			Principal p=request.getUserPrincipal();
+			String userEmail=p.getName();
+			Cart cartObj=cartDao.getCartByCustomer(userEmail);
+			Collection<Item> items=cartObj.getItems();
+			mv.addObject("itemsList",items);
+			double d=itemDao.getTotalPrice(cartObj.getCartId());
+			mv.addObject("TotalPrice",d);
+			int size=0;
+			for(Item item:items){
+				size=size+item.getQuantity();
+			}
+			mv.addObject("items",size);
+			
+			return mv;	
+		}
+		ModelAndView mv=new ModelAndView("OrderPlaced");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
+		Order o=new Order();
+		o.setAddress(a);
+		
+		//for payment
+		pp.setOrder(o);
+		paymentDao.addPayment(pp);
+		//for OrderItems
+		Principal p=request.getUserPrincipal();
+		String userEmail=p.getName();
+		o.setUser(userDao.getUser(userEmail));
+		Set<OrderItems> orderSet=new HashSet<>();
+		Cart cartObj=cartDao.getCartByCustomer(userEmail);
+		Collection<Item> items=cartObj.getItems();
+		for(Item i:items) {
+			OrderItems oi=new OrderItems();
+			oi.setProductObj(i.getProduct());
+			oi.setQuantity(i.getQuantity());
+			oi.setItemPrice(i.getProduct().getPrice()*i.getQuantity());
+			oi.setOrderObj(o);
+			orderItemsDao.addOrderItems(oi);
+			orderSet.add(oi);
+			
+		}
+		o.setItems(orderSet);
+		o.setTotalAmountPaid(itemDao.getTotalPrice(cartObj.getCartId()));
+		orderDao.makeOrder(o);
+		cartDao.deleteCart(cartObj.getCartId());
 		
 		
-		
+		return mv;
+	
 	}
 }

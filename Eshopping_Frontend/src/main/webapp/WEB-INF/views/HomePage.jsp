@@ -253,6 +253,7 @@ background-color: #213236 !important;
 			<c:forEach items="${fourProducts}" var="prodObj">
 			<c:if test="${catObj.categoryId eq prodObj.categoryId}">
 			<div class="side-container content text-center">
+			 <a href="${contextRoot}/product/${prodObj.productId}" id="links">  
 				<img
 					src="${pageContext.request.contextPath}/resources/images/${prodObj.imgname1}"
 					alt="" class="img-fix" />
@@ -266,6 +267,7 @@ background-color: #213236 !important;
 									<a href="${contextRoot}/addToCart/${prodObj.productId}"><i class="fa fa-shopping-cart icon"></i>
 									</a>
 									</sec:authorize>
+			</a>		
 			</div>
 			</c:if>
 			

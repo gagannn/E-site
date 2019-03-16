@@ -6,7 +6,7 @@ DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
 -->
 
 <body class="bg-purple">
-<jsp:include page="header.jsp" />        
+     
         <div class="stars">
             <!--<div class="custom-navbar">
                 <div class="brand-logo">
@@ -45,7 +45,7 @@ DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
             </div>
 
         </div>
-<jsp:include page="Footer.jsp" />
+
     </body>
 <head>
 <style>

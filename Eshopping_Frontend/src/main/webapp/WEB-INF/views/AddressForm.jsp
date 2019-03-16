@@ -25,7 +25,7 @@
 	
 	.background-image{
 	background:url(https://images.thrillophilia.com/image/upload/s--m2hvhyRw--/c_fill,f_auto,fl_strip_profile,h_775,q_auto,w_1600/v1/images/photos/000/049/572/original/Camping.jpg.jpg?1458181888);
-	height:100vh;
+	height:750px;
 	margin-top:-30px;
 	padding-top:100px !important;
 	}
@@ -107,6 +107,7 @@
 .signup-form {
 	opacity: 0.8;
 	margin-right: 35px;
+	
 }
 </style>
  
@@ -122,8 +123,9 @@
 	<!-- header -->
 	<jsp:include page="header.jsp"/>
 	
-	<div class="background-image">
-	<div class="signup-form">
+	<div class="background-image" >
+	<div class="signup-form" style="margin-bottom:50px !important;" >
+	
 	 <f:form action="${contextRoot}/addToCart/addAddress" modelAttribute="key1" method="post" enctype="multipart/form-data">
 		<h2>${formLabel}</h2>
 		<p>Please fill in this form to add an address!</p>
@@ -167,6 +169,7 @@
     </f:form>
 	<div class="hint-text"><span style="color:white">Return to Address page?</span> <a href="${contextRoot}/addToCart/addressPage">Click here</a></div>
 </div>
+
 </div>
 <jsp:include page="Footer.jsp" />
 </body>

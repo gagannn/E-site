@@ -26,6 +26,12 @@
 	box-shadow: 5px 5px 5px 5px rgb(187, 193, 204) !important;
 	padding-bottom: 30px;
 }
+.address{
+text-decoration: none!important;
+text-transform: uppercase;
+margin-left:3em;
+font-weight: 600!important;
+}
 
 body {
 	background-color: #f7f7f7 !important;
@@ -43,6 +49,9 @@ button {
 
 	<!-- body -->
 	<div class="container container-size">
+	<!-- <div class="alert alert-warning" id="demo">
+ 
+</div> -->
 	<c:if test="${not empty message}">	
 	<div class="alert alert-success">
 	${message}
@@ -64,16 +73,18 @@ button {
 					<c:forEach items="${address}" var="addr">
 
 						<div class="form-group">
-							<label> <input type="radio" name="radio">
-								${addr.houseNumber},${addr.locality},${addr.city},${addr.state }-${addr.pinCode},${addr.country}
-								<a href="${contextRoot}/addToCart/addressForm/${addr.id}">
+							<!-- <label> <input type="radio" name="radio"> -->
+							<a href="${contextRoot}/addToCart/payment/${addr.id}" class="address" >
+						${addr.houseNumber},${addr.locality},${addr.city},${addr.state }-${addr.pinCode},${addr.country}
+							<a href="${contextRoot}/addToCart/addressForm/${addr.id}" style="margin-left:0.7em">
 									<span class="glyphicon glyphicon-edit" ></span>
-							</a> <a href="${contextRoot}/addToCart/deleteAddress/${addr.id}" >
+							</a> <a href="${contextRoot}/addToCart/deleteAddress/${addr.id}" style="margin-left:0.2em">
 									<span class="glyphicon glyphicon-trash" style="color:#c71c1c;text-decoration:none;" 
 									onMouseOver="this.style.color='red'"
 								onMouseOut="this.style.color='#c71c1c'"></span>
 							</a>
-							</label>
+							</a>
+						<!-- 	</label> -->
 						</div>
 
 
@@ -104,13 +115,20 @@ button {
 					class="fa fa-angle-left"></i> Go Back</a>
 			</div>
 			<div class="col-md-6">
-				<br> <a href="#" class="btn btn-success pull-right"
-					role="button"> Proceed <i class="fa fa-angle-right"></i></a>
+				<br> <%-- <a href="${contextRoot}/addToCart/payment" class="btn btn-success pull-right"
+					role="button"> Pay <i class="fa fa-angle-right"></i></a> --%>
+					<button class="btn btn-success pull-right" onclick="myFunction()"> Pay <i class="fa fa-angle-right"></i></button>
 			</div>
 		</div>
 
 	</div>
 	<jsp:include page="Footer.jsp" />
+	<script>
+function myFunction() {
+	alert("Choose an address from saved ones first!!! ");
+  /* document.getElementById("demo").innerHTML = "Indicates a warning that might need attention."; */
+}
+</script>
 </body>
 </html>
 

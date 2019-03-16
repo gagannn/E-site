@@ -123,19 +123,19 @@ public class UserController {
 	public ModelAndView loginForm(@RequestParam(name="error",required=false)String error)
 	{
 		
-		User u=new User();
+		//User u=new User();
 		ModelAndView mv=new ModelAndView("LoginForm");
 		if(error!=null) {
 			mv.addObject("msg","Email or Password is incorrect...");
 		}
-		//List<Category> categories=categoryDao.getAllCategories();
-		//mv.addObject("categoriesList",categories);
-		//List<Product> products=productDao.getAllProducts();
-		//mv.addObject("productsList",products);
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
 		
 		//mv.addObject("key1",u);
-		//mv.addObject("btnLabel","Login");
-		//mv.addObject("formLabel","User Login");
+		mv.addObject("btnLabel","Login");
+		mv.addObject("formLabel","User Login");
 		return mv;
 	}
 	

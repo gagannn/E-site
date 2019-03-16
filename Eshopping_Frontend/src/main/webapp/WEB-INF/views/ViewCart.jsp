@@ -65,7 +65,8 @@
 						</c:forEach>
 						
 					</tbody>
-					<tfoot>
+					
+					<tfoot style="margin-top:200px !important;">
 						<tr class="visible-xs">
 							<td class="text-center"><strong>${TotalPrice}</strong></td>
 						</tr>
@@ -110,8 +111,15 @@
 		display: inline-block; width: 8rem;
 	}
 	
+	table#cart tbody{
+    display:block;
+    margin-bottom:10px;
+    border-radius: 5px;
+}
 	
 	
+table#cart tfoot{
+height:100px !important;}
 	table#cart tfoot td{display:block; }
 	table#cart tfoot td .btn{display:block;}
 	

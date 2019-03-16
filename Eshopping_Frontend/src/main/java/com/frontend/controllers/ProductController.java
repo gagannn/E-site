@@ -258,5 +258,19 @@ public class ProductController {
 		return mv;
 	}
 	
+	@RequestMapping(value="/product/{pId}",method=RequestMethod.GET)
+	public ModelAndView getProductById(@PathVariable("pId")int prodId){
+		Product pro=productDao.getProductById(prodId);
+		ModelAndView mv=new ModelAndView("Product");
+		List<Category> categories=categoryDao.getAllCategories();
+		mv.addObject("categoriesList",categories);
+		List<Product> products=productDao.getAllProducts();
+		mv.addObject("productsList",products);
+		mv.addObject("prodObj",pro);
+		return mv;
+		
+	}
+	
+	
 	
 }

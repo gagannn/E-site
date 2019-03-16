@@ -1,11 +1,15 @@
 package com.backend.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,16 +20,38 @@ public class Order {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int orderId;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="email")
 	private User user; 
-	
 	
 	@OneToOne
 	@JoinColumn(name="id")
 	private Address address;
+	
+	@OneToMany(mappedBy="orderObj")
+	Set<OrderItems> items=new HashSet<>();
+
+	private double totalAmountPaid;
+	
+	public double getTotalAmountPaid() {
+		return totalAmountPaid;
+	}
 
 
+	public void setTotalAmountPaid(double totalAmountPaid) {
+		this.totalAmountPaid = totalAmountPaid;
+	}
+
+
+	public Set<OrderItems> getItems() {
+		return items;
+	}
+
+
+	public void setItems(Set<OrderItems> items) {
+		this.items = items;
+	}
+	
 	public int getOrderId() {
 		return orderId;
 	}

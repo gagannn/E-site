@@ -27,6 +27,9 @@
 	margin-bottom: 25px;
 	width: auto !important;
 }
+#links:hover{
+text-decoration:none !important;
+}
 </style>
 </head>
 <body>
@@ -46,7 +49,9 @@
 			<div class="row">
 				<c:forEach items="${productsList}" var="prodObj">
 					<div class="col-md-3">
+					
 						<div class="card" style="width: 18rem;">
+						 <a href="${contextRoot}/product/${prodObj.productId}" id="links">
 							<img
 								src="${pageContext.request.contextPath}/resources/images/${prodObj.imgname1}"
 								class="card-img-top" alt="...">
@@ -72,9 +77,12 @@
 									<!-- <span
 										class="glyphicon glyphicon-ok"></span>  --></a>
 									</sec:authorize>
+									
 								</div>
 							</div>
+							 </a>
 						</div>
+						
 					</div>
 				</c:forEach>
 			</div>
