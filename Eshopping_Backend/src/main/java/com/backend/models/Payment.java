@@ -2,6 +2,7 @@ package com.backend.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,20 +19,25 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Payment {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int paymentId;
+	
 	private String cardNo;
+	
 	private Integer cvv;
+	
 	@NotNull(message="Expiry is mandatory")
 	@DateTimeFormat(pattern = "MM/yy")
 	@Future(message="Card expired")
 	private Date expiry;
+	
 	@NotEmpty(message="Name is mandatory")
 	private String nameOnCard;
 	
-	@OneToOne
-	@JoinColumn(name="Order")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="OrderId")
 	private Order order;
 
 	public int getPaymentId() {

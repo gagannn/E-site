@@ -21,6 +21,7 @@ class="org.springframework.web.multipart.support.StandardServletMultipartResolve
 
    <context:component-scan base-package = "com.frontend.controllers" />
    <context:component-scan base-package = "com.backend.config" />
+   <context:component-scan base-package = "com.backend.service" />
    <context:component-scan base-package = "com.backend.daos" />
    <context:component-scan base-package = "com.backend.models" />
 <context:component-scan base-package = "com.backend.validators" />

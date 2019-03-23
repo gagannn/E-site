@@ -62,7 +62,9 @@ text-decoration:none !important;
 								<sec:authorize access="hasAuthority('Role_Admin')">
 									<a href="${contextRoot}/editProduct/${prodObj.productId}">
 										<span class="glyphicon glyphicon-edit"></span>
-									</a> <a href="${contextRoot}/deleteProduct/${prodObj.productId}">
+									</a> <a href="${contextRoot}/deleteProduct/${prodObj.productId}" style="color:#c71c1c;text-decoration:none;" 
+								 onMouseOver="this.style.color='red'"
+								onMouseOut="this.style.color='#c71c1c'">
 										<span class="glyphicon glyphicon-trash"></span>
 								
 									</a>

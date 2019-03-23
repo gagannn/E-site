@@ -38,7 +38,7 @@ public class Address {
 	@ManyToOne
 	@JoinColumn(name="UserEmail")
 	private User userObj;
-	
+		
 	//@OneToOne(mappedBy="address",cascade=CascadeType.REMOVE,fetch=FetchType.EAGER)
 	//private Order order;
 	

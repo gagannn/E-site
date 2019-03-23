@@ -3,6 +3,7 @@ package com.backend.models;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,11 +25,12 @@ public class Order {
 	@JoinColumn(name="email")
 	private User user; 
 	
+	
 	@OneToOne
 	@JoinColumn(name="id")
 	private Address address;
 	
-	@OneToMany(mappedBy="orderObj")
+	@OneToMany(mappedBy="orderObj",cascade=CascadeType.ALL)
 	Set<OrderItems> items=new HashSet<>();
 
 	private double totalAmountPaid;

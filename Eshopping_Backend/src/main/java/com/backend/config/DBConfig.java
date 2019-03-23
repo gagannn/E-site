@@ -26,6 +26,7 @@ import com.backend.models.Payment;
 import com.backend.models.Product;
 import com.backend.models.Supplier;
 import com.backend.models.User;
+import com.backend.service.EmailService;
 import com.backend.validators.CategoryValidator;
 import com.backend.validators.LoginValidator;
 import com.backend.validators.MyPasswordValidator;
@@ -76,6 +77,7 @@ public class DBConfig {
 		sb.addAnnotatedClass(LoginValidator.class);
 		sb.addAnnotatedClass(Item.class);
 		sb.addAnnotatedClass(Order.class);
+		sb.addAnnotatedClass(EmailService.class);
 		sb.addAnnotatedClass(Payment.class);
 		sb.addAnnotatedClass(OrderItems.class);
 		sb.addAnnotatedClass(PhoneNoValidator.class);

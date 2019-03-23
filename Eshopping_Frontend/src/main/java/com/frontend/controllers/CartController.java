@@ -37,6 +37,8 @@ import com.backend.models.Order;
 import com.backend.models.OrderItems;
 import com.backend.models.Payment;
 import com.backend.models.Product;
+import com.backend.models.User;
+import com.backend.service.EmailService;
 import com.backend.validators.PaymentValidator;
 
 @Controller
@@ -76,6 +78,9 @@ public class CartController {
 	
 	@Autowired
 	PaymentValidator paymentValidator;
+	
+	@Autowired
+	EmailService emailService;
 	
 	static Address a;
 
@@ -258,7 +263,10 @@ public class CartController {
 	
 	@RequestMapping(value="/addToCart/payment/{id}",method=RequestMethod.GET)
 	public ModelAndView getPayment(@PathVariable("id")int pId){
+	
 		a=addressDao.getAddressById(pId);
+		System.out.println("A = "+a);
+		
 		Payment pay=new Payment();
 		ModelAndView mv=new ModelAndView("Payment");
 		mv.addObject("key1",pay);
@@ -285,6 +293,8 @@ public class CartController {
 	
 	@RequestMapping(value="/addToCart/payment/placeOrder",method=RequestMethod.POST)
 	public ModelAndView placeOrder(@Valid@ModelAttribute("key1")Payment pp,BindingResult result){
+		
+		System.out.println(a);
 		paymentValidator.validate(pp, result);
 		if(result.hasErrors()) {
 			ModelAndView mv=new ModelAndView("Payment");
@@ -319,6 +329,7 @@ public class CartController {
 		//for payment
 		pp.setOrder(o);
 		paymentDao.addPayment(pp);
+		
 		//for OrderItems
 		Principal p=request.getUserPrincipal();
 		String userEmail=p.getName();
@@ -334,14 +345,17 @@ public class CartController {
 			oi.setOrderObj(o);
 			orderItemsDao.addOrderItems(oi);
 			orderSet.add(oi);
+			Product pro=i.getProduct();
+			pro.setQuantity(pro.getQuantity()-i.getQuantity());
+			productDao.updateProduct(pro);
 			
 		}
 		o.setItems(orderSet);
 		o.setTotalAmountPaid(itemDao.getTotalPrice(cartObj.getCartId()));
 		orderDao.makeOrder(o);
 		cartDao.deleteCart(cartObj.getCartId());
-		
-		
+		User userObj=userDao.getUser(userEmail);
+		emailService.sendThankuMsg(userObj, "Your order has been processed succesfully");
 		return mv;
 	
 	}
