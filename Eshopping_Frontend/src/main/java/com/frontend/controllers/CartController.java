@@ -355,7 +355,7 @@ public class CartController {
 		orderDao.makeOrder(o);
 		cartDao.deleteCart(cartObj.getCartId());
 		User userObj=userDao.getUser(userEmail);
-		emailService.sendThankuMsg(userObj, "Your order has been processed succesfully");
+		emailService.sendThankuMsg(userObj, "Your order has been processed succesfully. Order id is "+o.getOrderId());
 		return mv;
 	
 	}

@@ -45,7 +45,7 @@ public class EmailService {
 			// set up your HTML message here
 			StringBuilder htmlMsg = new StringBuilder();
 
-			htmlMsg.append("<h1>Welcome " + user.getFirstName() + " " + user.getLastName() + " on SkillMapper!</h1>");
+			htmlMsg.append("<h1>Welcome " + user.getFirstName() + " " + user.getLastName() + " on boulder!</h1>");
 			htmlMsg.append("<p>"+message+"</p><br/>");
 			//htmlMsg.append("<p>Thanks for joining with us!</p><br/>");
 
@@ -54,7 +54,7 @@ public class EmailService {
 
 			// set the subject and recipient of the email
 			helper.setTo(user.getEmail());
-			helper.setSubject("WELCOME TO NIIT");
+			helper.setSubject("Boulder");
 			helper.setFrom(from);
 
 			// send the message

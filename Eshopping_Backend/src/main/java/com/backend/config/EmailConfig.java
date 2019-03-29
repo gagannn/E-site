@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
-@ComponentScan("com.backend.service.skillmapper")
+@ComponentScan("com.backend")
 public class EmailConfig {
 
 	@Bean("mailSender")

@@ -145,7 +145,7 @@ h1 {
 			<h1>Login Here</h1>
 			<form name='f' action="login" method='POST'>
 				<p>Email</p>
-				<input type="text" id="ssoId" placeholder="Email"
+				<input type="email" style="opacity: 1;" id="ssoId" placeholder="Email"
 					class="form-control input_user" value="" name="ssoId" required />
 
 

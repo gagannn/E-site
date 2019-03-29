@@ -27,8 +27,9 @@
 	margin-bottom: 25px;
 	width: auto !important;
 }
-#links:hover{
-text-decoration:none !important;
+
+#links:hover {
+	text-decoration: none !important;
 }
 </style>
 </head>
@@ -39,8 +40,8 @@ text-decoration:none !important;
 	<!-- body -->
 	<div class="container">
 		<c:if test="${not empty CatName}">
-		<h1>${CatName}</h1>
-		
+			<h1>${CatName}</h1>
+
 		</c:if>
 		<c:if test="${not empty message}">
 			<div class="alert alert-success">${message}</div>
@@ -49,54 +50,63 @@ text-decoration:none !important;
 			<div class="row">
 				<c:forEach items="${productsList}" var="prodObj">
 					<div class="col-md-3">
-					
+
 						<div class="card" style="width: 18rem;">
-						 <a href="${contextRoot}/product/${prodObj.productId}" id="links">
-							<img
+							<a href="${contextRoot}/product/${prodObj.productId}" id="links">
+								<img
 								src="${pageContext.request.contextPath}/resources/images/${prodObj.imgname1}"
 								class="card-img-top" alt="...">
-							<div class="card-body">
-								<h5 class="card-title text-center">${prodObj.productName}</h5>
-								<p class="card-text text-right">${prodObj.price}</p>
-								<div class="text-right">
-								<sec:authorize access="hasAuthority('Role_Admin')">
-									<a href="${contextRoot}/editProduct/${prodObj.productId}">
-										<span class="glyphicon glyphicon-edit"></span>
-									</a> <a href="${contextRoot}/deleteProduct/${prodObj.productId}" style="color:#c71c1c;text-decoration:none;" 
-								 onMouseOver="this.style.color='red'"
-								onMouseOut="this.style.color='#c71c1c'">
-										<span class="glyphicon glyphicon-trash"></span>
-								
-									</a>
-									</sec:authorize> 
-									<sec:authorize access="hasAuthority('Role_User')">
-									<a href="${contextRoot}/addToCart/${prodObj.productId}"><i class="fa fa-shopping-cart icon"></i>
-									<!-- <span
-										class="glyphicon glyphicon-ok"></span>  --></a>
+								<div class="card-body">
+									<h5 class="card-title text-center">${prodObj.productName}</h5>
+									<p class="card-text text-right">${prodObj.price}</p>
+									<div class="text-right">
+										<sec:authorize access="hasAuthority('Role_Admin')">
+											<a href="${contextRoot}/editProduct/${prodObj.productId}">
+												<span class="glyphicon glyphicon-edit"></span>
+											</a>
+											<a href="${contextRoot}/deleteProduct/${prodObj.productId}"
+												style="color: #c71c1c; text-decoration: none;"
+												onMouseOver="this.style.color='red'"
+												onMouseOut="this.style.color='#c71c1c'"> <span
+												class="glyphicon glyphicon-trash"></span>
+
+											</a>
 										</sec:authorize>
-									<sec:authorize access="isAnonymous()">
-									<a href="${contextRoot}/addToCart/${prodObj.productId}"><i class="fa fa-shopping-cart icon"></i>
-									<!-- <span
+										<c:choose>
+											<c:when test="${prodObj.quantity > 0}">
+												<sec:authorize access="hasAuthority('Role_User')">
+													<a href="${contextRoot}/addToCart/${prodObj.productId}"><i
+														class="fa fa-shopping-cart icon"></i> <!-- <span
 										class="glyphicon glyphicon-ok"></span>  --></a>
-									</sec:authorize>
-									
+												</sec:authorize>
+												<sec:authorize access="isAnonymous()">
+													<a href="${contextRoot}/addToCart/${prodObj.productId}"><i
+														class="fa fa-shopping-cart icon"></i> <!-- <span
+										class="glyphicon glyphicon-ok"></span>  --></a>
+												</sec:authorize>
+											</c:when>
+											<c:otherwise>
+												<p style="color: red;">Out of stock</p>
+											</c:otherwise>
+										</c:choose>
+
+									</div>
 								</div>
-							</div>
-							 </a>
+							</a>
 						</div>
-						
+
 					</div>
 				</c:forEach>
 			</div>
 		</div>
-</div>
-
-
-		
+	</div>
 
 
 
-<jsp:include page="Footer.jsp" />
-	
+
+
+
+	<jsp:include page="Footer.jsp" />
+
 </body>
 </html>

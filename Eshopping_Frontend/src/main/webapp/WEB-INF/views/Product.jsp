@@ -55,6 +55,8 @@ color: black !important;
 				<div class="abc" style="margin-left: 10px;">
 					<p>${prodObj.description}</p>
 					<p>${prodObj.price}</p>
+					<c:choose>
+					<c:when test="${prodObj.quantity > 0}">
 					<sec:authorize access="isAnonymous()">
 					<a href="${contextRoot}/addToCart/${prodObj.productId}" class="btn btn-primary"
 					role="button" style="font-color:black !important;"> Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></a>
@@ -63,6 +65,12 @@ color: black !important;
 					<a href="${contextRoot}/addToCart/${prodObj.productId}" class="btn btn-primary"
 					role="button" style="font-color:black !important;"> Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span></a>
 					</sec:authorize>
+					</c:when>
+					<c:otherwise>
+						<p style="color:red;"> Out of stock</p>
+					</c:otherwise>
+					</c:choose>
+					
 					<sec:authorize access="hasAuthority('Role_Admin')">
 					<a href="${contextRoot}/editProduct/${prodObj.productId}" class="btn btn-info"
 					role="button" style="font-color:black !important;"> Edit <span class="glyphicon glyphicon-edit"></span></a>
@@ -70,6 +78,7 @@ color: black !important;
 					role="button" style="font-color:black !important;"> Delete <span class="glyphicon glyphicon-trash"></span></a>
 					
 					</sec:authorize>
+					
 				</div>
 
 			</div>
