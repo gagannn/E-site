@@ -8,7 +8,6 @@
 <c:set value="${pageContext.request.contextPath}" var="contextRoot"
 	scope="session" />
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -155,6 +154,7 @@ nav ul li a:active, a:visited {
 }
 </style>
 </head>
+
 <body>
 	<!-- header -->
 	<jsp:include page="header.jsp" />
@@ -184,7 +184,6 @@ nav ul li a:active, a:visited {
 								</button>
 							</a>
 						</p>
-
 					</div>
 				</div>
 				<div class="carousel-item">
@@ -235,7 +234,6 @@ nav ul li a:active, a:visited {
 	<div class="main-container ">
 		<div class="row">
 			<c:forEach items="${threeRandomProducts}" var="catObj">
-
 				<div class="col-md-4 text-center content">
 					<a
 						href="${contextRoot}/getProductsByCategory/${catObj.key.categoryId}"
@@ -246,10 +244,7 @@ nav ul li a:active, a:visited {
 						alt="" class="img-fluid" />
 					</a>
 				</div>
-
-
 			</c:forEach>
-
 		</div>
 	</div>
 
@@ -265,7 +260,6 @@ nav ul li a:active, a:visited {
 								<span class="overlay-item">${catObj.categoryName}</span>
 							</h2>
 							<p class="overlay-para ml-3">View All</p>
-
 						</div>
 					</a>
 				</div>
@@ -296,7 +290,6 @@ nav ul li a:active, a:visited {
 							</a>
 						</div>
 					</c:if>
-
 				</c:forEach>
 
 			</div>
@@ -328,6 +321,7 @@ nav ul li a:active, a:visited {
 	<!--Script tags ends-->
 	<jsp:include page="Footer.jsp" />
 </body>
+
 </html>
 
 

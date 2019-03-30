@@ -40,7 +40,6 @@ public class AddressDaoImpl implements AddressDao {
 		try{
 			Session session=SessionFactory.getCurrentSession();
 			Address obj=(Address)session.get(Address.class, addressId);
-
 			return obj;
 		}
 		catch(Exception e){
@@ -53,9 +52,7 @@ public class AddressDaoImpl implements AddressDao {
 	public boolean updateAddress(Address address) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-
 			session.update(address);
-			
 			return true;
 		}
 		catch(Exception e){
@@ -68,7 +65,6 @@ public class AddressDaoImpl implements AddressDao {
 	public boolean deleteAddress(Address address) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-
 			session.delete(address);
 			return true;
 		}

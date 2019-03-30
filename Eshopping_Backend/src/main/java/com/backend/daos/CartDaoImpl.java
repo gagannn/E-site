@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import com.backend.models.Address;
 import com.backend.models.Cart;
 
-
 @Repository("cartDao")
 @Transactional
 public class CartDaoImpl implements CartDao {
@@ -66,7 +65,6 @@ public class CartDaoImpl implements CartDao {
 			e.printStackTrace();
 		}
 		return false;
-
 	}
 
 }

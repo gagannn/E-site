@@ -45,7 +45,6 @@ public class SupplierDaoImpl implements SupplierDao {
 	}
 
 	public boolean updateSupplier(Supplier supp) {
-
 		try {
 			Session session=SessionFactory.getCurrentSession();
 			session.update(supp);

@@ -1,6 +1,5 @@
 package com.frontend.controllers;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,6 @@ import com.backend.models.User;
 import com.backend.validators.LoginValidator;
 import com.backend.validators.MyPasswordValidator;
 import com.backend.validators.PhoneNoValidator;
-
 
 @Controller
 public class UserController {
@@ -100,7 +98,6 @@ public class UserController {
 			mv.addObject("fourProducts",fourProducts);
 			mv.addObject("message","User Added Succesfully...");
 			return mv;
-			
 		}
 		else
 		{
@@ -122,7 +119,6 @@ public class UserController {
 	@RequestMapping(value="login",method=RequestMethod.GET)
 	public ModelAndView loginForm(@RequestParam(name="error",required=false)String error)
 	{
-		
 		//User u=new User();
 		ModelAndView mv=new ModelAndView("LoginForm");
 		if(error!=null) {
@@ -132,7 +128,6 @@ public class UserController {
 		mv.addObject("categoriesList",categories);
 		List<Product> products=productDao.getAllProducts();
 		mv.addObject("productsList",products);
-		
 		//mv.addObject("key1",u);
 		mv.addObject("btnLabel","Login");
 		mv.addObject("formLabel","User Login");
@@ -167,15 +162,14 @@ public class UserController {
 			return mv;
 		}
 	}
+	
 	@RequestMapping(value="logoutUser",method=RequestMethod.GET)
 	public String logout(HttpServletRequest request,HttpServletResponse response) {
 		
 		//first we are going to fetch the authentication
 		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-		if(auth!=null){
-			
+		if(auth!=null){	
 			new SecurityContextLogoutHandler().logout(request, response, auth);
-			
 		}
 		return "redirect:/";
 	}

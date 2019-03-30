@@ -1,6 +1,5 @@
 package com.frontend.controllers;
 
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,32 +34,31 @@ public class ProductController {
 
 	@Autowired
 	ProductDao productDao;
-	
+
 	@Autowired
 	CategoryDao categoryDao;
 
 	@Autowired
 	SupplierDao supplierDao;
-	
+
 	@Autowired
 	HttpSession session;
-	
+
 	@Autowired
 	private HttpServletRequest request;
-	
+
 	@Autowired
 	CategoryValidator categoryValidator;
-	
+
 	@Autowired
 	ProductImageValidator productImageValidator;
-	
+
 	//@Autowired
 	//SessionFactory SessionFactory;
-	
+
 	@RequestMapping(value="getProductForm",method=RequestMethod.GET)
 	public ModelAndView productForm(){
 		Product  productObj=new Product();
-		
 		ModelAndView mv=new ModelAndView("ProductForm");
 		List<Category> categories=categoryDao.getAllCategories();
 		mv.addObject("categoriesList",categories);
@@ -69,13 +67,13 @@ public class ProductController {
 		mv.addObject("key1",productObj);
 		mv.addObject("btnLabel","Add Product");
 		mv.addObject("formLabel","Add Product Form");
-
 		List<Category> categoryList=categoryDao.getAllCategories();
 		mv.addObject("catObj",categoryList);
 		List<Supplier> supplierList=supplierDao.getAllSuppliers();
 		mv.addObject("suppObj",supplierList);
 		return mv;
 	}
+	
 	@RequestMapping(value="submitProduct",method=RequestMethod.POST)
 	public ModelAndView addProduct(@Valid@ModelAttribute("key1")Product prod,BindingResult result){
 		categoryValidator.validate(prod, result);
@@ -85,13 +83,11 @@ public class ProductController {
 		}
 		ModelAndView mv=null;
 		if(result.hasErrors()) {
-		
 			mv=new ModelAndView("ProductForm");
 			List<Category> categories=categoryDao.getAllCategories();
 			mv.addObject("categoriesList",categories);
 			List<Product> products=productDao.getAllProducts();
 			mv.addObject("productsList",products);
-			
 			List<Category> catList=categoryDao.getAllCategories();
 			List<Supplier> sList=supplierDao.getAllSuppliers();
 			mv.addObject("key1",prod);
@@ -101,46 +97,28 @@ public class ProductController {
 			mv.addObject("btnLabel","Add Product");
 			return mv;
 		}
-		
-			
-		
 		System.out.println("Product Obj = "+prod);
 		mv=new ModelAndView("ViewProducts");
 		List<Category> categories=categoryDao.getAllCategories();
 		mv.addObject("categoriesList",categories);
 		List<Product> products=productDao.getAllProducts();
 		mv.addObject("productsList",products);
-		
 		if(prod.getProductId()==0)
 		{
-			
-			//HttpSession session=request.getSession();
-				
 			String filePathString = session.getServletContext().getRealPath("/");
 			System.out.println("filePathString : "+filePathString);
-			
-			
 			System.out.println("pimage : "+prod.getPimage1());
 			//System.out.println("pimage2 : "+productObj.getPimage2());
-			
 			String fileName=prod.getPimage1().getOriginalFilename();
 			//String fileName2=productObj.getPimage2().getOriginalFilename();
-
 			System.out.println("filname  :"+fileName);
-			
 			//System.out.println("filname  :"+fileName2);
-
-			
 			prod.setImgname1(fileName);
 			//productObj.setImgName2(fileName2);
-
 			//productDao.addProduct(prod);
-			
 			uploadImage(prod,filePathString,fileName);
 			productDao.addProduct(prod);
 			mv.addObject("message","Product Added Successfully");
-		
-			
 		}
 		else
 		{
@@ -160,7 +138,7 @@ public class ProductController {
 				uploadImage(prod, filePathString,fileName);
 			}
 		}
-	//List<Category> categories=categoryDao.getAllCategories();
+		//List<Category> categories=categoryDao.getAllCategories();
 		mv.addObject("catObj",categories);
 		//mv.addObject("title","Update Product");
 		//mv.addObject("saveBtn", "Update");
@@ -168,8 +146,7 @@ public class ProductController {
 		mv.addObject("productsList", list);
 		return mv;
 	}
-	
-	
+
 	public void uploadImage(Product product,String filePathString,String fileName) {
 		try{
 			byte[] imageBytes=product.getPimage1().getBytes();
@@ -189,10 +166,9 @@ public class ProductController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping(value="getAllProducts",method=RequestMethod.GET)
 	public ModelAndView fetchAllProducts(){
-		
 		List<Product> products=productDao.getAllProducts();
 		System.out.println(products);
 		ModelAndView mv=new ModelAndView("ViewProducts");
@@ -203,13 +179,11 @@ public class ProductController {
 		mv.addObject("productsList",products);
 		return mv;
 	}
-	
+
 	@RequestMapping(value="deleteProduct/{pId}",method=RequestMethod.GET)
 	public ModelAndView delete(@PathVariable("pId")int prodId){
-		
 		Product obj=productDao.getProductById(prodId);
 		productDao.deleteProduct(obj);
-		
 		ModelAndView mv=new ModelAndView("ViewProducts");
 		List<Category> categories=categoryDao.getAllCategories();
 		mv.addObject("categoriesList",categories);
@@ -219,12 +193,12 @@ public class ProductController {
 		mv.addObject("productsList",productDao.getAllProducts());
 		return mv;
 	}
-	
+
 	@RequestMapping(value="getProductsByCategory/{categoryId}",method=RequestMethod.GET)
 	public ModelAndView byCategory(@PathVariable("categoryId")int id){
 		ModelAndView mv = new ModelAndView("ViewProducts");
 		List<Product> list=productDao.viewAllProductByCategoryId(id);
-	System.out.println("CatId: "+id);
+		System.out.println("CatId: "+id);
 		List<Category> categories=categoryDao.getAllCategories();
 		mv.addObject("categoriesList",categories);
 		mv.addObject("productsList", list);
@@ -232,15 +206,11 @@ public class ProductController {
 		System.out.println("CatId: "+id);
 		System.out.println("Products: "+list);
 		return mv;
-	
-	
 	}
-	
+
 	@RequestMapping(value="editProduct/{pId}",method=RequestMethod.GET)
 	public ModelAndView edit(@PathVariable("pId")int prodId){
-		
 		Product obj=productDao.getProductById(prodId);
-		
 		ModelAndView mv=new ModelAndView("ProductForm");
 		List<Category> categoryList=categoryDao.getAllCategories();
 		mv.addObject("catObj",categoryList);
@@ -257,7 +227,7 @@ public class ProductController {
 		mv.addObject("op","Edit");
 		return mv;
 	}
-	
+
 	@RequestMapping(value="/product/{pId}",method=RequestMethod.GET)
 	public ModelAndView getProductById(@PathVariable("pId")int prodId){
 		Product pro=productDao.getProductById(prodId);
@@ -268,9 +238,6 @@ public class ProductController {
 		mv.addObject("productsList",products);
 		mv.addObject("prodObj",pro);
 		return mv;
-		
 	}
-	
-	
 	
 }

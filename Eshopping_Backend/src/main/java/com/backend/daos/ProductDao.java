@@ -6,7 +6,6 @@ import java.util.Map;
 import com.backend.models.Category;
 import com.backend.models.Product;
 
-
 public interface ProductDao {
 	public boolean addProduct(Product product);
 	public boolean deleteProduct(Product prodid);

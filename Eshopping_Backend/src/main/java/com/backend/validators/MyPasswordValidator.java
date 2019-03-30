@@ -16,7 +16,6 @@ public class MyPasswordValidator implements Validator {
 		return User.class.isAssignableFrom(clazz);
 	}
 
-	
 	@Override
 	public void validate(Object target, Errors errors) {
 		

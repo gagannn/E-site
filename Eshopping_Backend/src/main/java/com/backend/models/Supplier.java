@@ -21,13 +21,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name="SupplierTable")
 public class Supplier {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int supplierId;
+	
 	@NotEmpty(message="Supplier name is mandatory")
 	private String suppName;
+	
 	@NotNull(message="Supplier mobile no. is mandatory")
 	private Long suppMobile;
+	
 	@NotEmpty(message="Supplier address is mandatory")
 	private String address;
 	
@@ -66,5 +70,4 @@ public class Supplier {
 		this.address = address;
 	}
 	
-
 }

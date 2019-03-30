@@ -1,7 +1,6 @@
 <%@taglib prefix='f' uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <head>
 <title>Login</title>
 <meta name="google-signin-client_id"
@@ -132,23 +131,20 @@ h1 {
 	<c:if test="${not empty message}">
 		<div class="alert alert-danger">${message}</div>
 	</c:if>
-
 	<div class="background-image">
 		<c:if test="${not empty msg}">
 			<div class="alert alert-danger">${msg}</div>
 		</c:if>
 		<div class="loginbox">
-
 			<img
 				src="${pageContext.request.contextPath}/resources/images/avatar.png"
 				class="avatar">
 			<h1>Login Here</h1>
 			<form name='f' action="login" method='POST'>
 				<p>Email</p>
-				<input type="email" style="opacity: 1;" id="ssoId" placeholder="Email"
-					class="form-control input_user" value="" name="ssoId" required />
-
-
+				<input type="email" style="opacity: 1;" id="ssoId"
+					placeholder="Email" class="form-control input_user" value=""
+					name="ssoId" required />
 				<p>Password</p>
 				<input type="password" class="form-control input_pass" id="password"
 					name="password" value="" placeholder="Password" required /> <input
@@ -156,8 +152,6 @@ h1 {
 					href="${contextRoot}/getSignupForm">Don't have an account?</a> <input
 					type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			</form>
-
-
 		</div>
 	</div>
 	<jsp:include page="Footer.jsp" />

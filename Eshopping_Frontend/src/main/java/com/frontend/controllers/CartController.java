@@ -54,34 +54,34 @@ public class CartController {
 
 	@Autowired
 	HttpServletRequest request;
-	
+
 	@Autowired
 	CategoryDao categoryDao;
-	
+
 	@Autowired
 	UserDao userDao;
 
 	@Autowired
 	ProductDao productDao;
-	
+
 	@Autowired
 	OrderItemsDao orderItemsDao;
-	
+
 	@Autowired
 	OrderDao orderDao;
-	
+
 	@Autowired
 	AddressDao addressDao;
-	
+
 	@Autowired
 	PaymentDao paymentDao;
-	
+
 	@Autowired
 	PaymentValidator paymentValidator;
-	
+
 	@Autowired
 	EmailService emailService;
-	
+
 	static Address a;
 
 	@RequestMapping(value="/addToCart/{pId}",method=RequestMethod.GET)
@@ -143,11 +143,8 @@ public class CartController {
 			mv.addObject("TotalPrice",d);
 			return mv;
 		}
-		
-		
-		
 	}
-	
+
 	@RequestMapping(value="/addToCart/increase/{id}",method=RequestMethod.GET)
 	public ModelAndView increaseQuantity(@PathVariable("id")int pId){
 		Item i=itemDao.getItemByItemId(pId);
@@ -175,9 +172,8 @@ public class CartController {
 			mv.addObject("TotalPrice",d);
 			return mv;
 		}
-		
 	}
-	
+
 	@RequestMapping(value="/addToCart/decrease/{id}",method=RequestMethod.GET)
 	public ModelAndView decreaseQuantity(@PathVariable("id")int pId){
 		Item i=itemDao.getItemByItemId(pId);
@@ -206,7 +202,7 @@ public class CartController {
 				return mv;
 			}
 		}
-		
+
 		itemDao.decreaseQuantity(pId);
 		Principal p=request.getUserPrincipal();
 		String userEmail=p.getName();
@@ -230,7 +226,6 @@ public class CartController {
 			mv.addObject("TotalPrice",d);
 			return mv;
 		}
-		
 	}
 
 	@RequestMapping(value="/addToCart/delete/{id}",method=RequestMethod.GET)
@@ -260,13 +255,11 @@ public class CartController {
 			return mv;
 		}	
 	}
-	
+
 	@RequestMapping(value="/addToCart/payment/{id}",method=RequestMethod.GET)
 	public ModelAndView getPayment(@PathVariable("id")int pId){
-	
 		a=addressDao.getAddressById(pId);
 		System.out.println("A = "+a);
-		
 		Payment pay=new Payment();
 		ModelAndView mv=new ModelAndView("Payment");
 		mv.addObject("key1",pay);
@@ -286,14 +279,12 @@ public class CartController {
 			size=size+item.getQuantity();
 		}
 		mv.addObject("items",size);
-		
 		return mv;	
 	}
-	
-	
+
+
 	@RequestMapping(value="/addToCart/payment/placeOrder",method=RequestMethod.POST)
 	public ModelAndView placeOrder(@Valid@ModelAttribute("key1")Payment pp,BindingResult result){
-		
 		System.out.println(a);
 		paymentValidator.validate(pp, result);
 		if(result.hasErrors()) {
@@ -315,7 +306,6 @@ public class CartController {
 				size=size+item.getQuantity();
 			}
 			mv.addObject("items",size);
-			
 			return mv;	
 		}
 		ModelAndView mv=new ModelAndView("OrderPlaced");
@@ -325,11 +315,9 @@ public class CartController {
 		mv.addObject("productsList",products);
 		Order o=new Order();
 		o.setAddress(a);
-		
 		//for payment
 		pp.setOrder(o);
 		paymentDao.addPayment(pp);
-		
 		//for OrderItems
 		Principal p=request.getUserPrincipal();
 		String userEmail=p.getName();
@@ -348,7 +336,6 @@ public class CartController {
 			Product pro=i.getProduct();
 			pro.setQuantity(pro.getQuantity()-i.getQuantity());
 			productDao.updateProduct(pro);
-			
 		}
 		o.setItems(orderSet);
 		o.setTotalAmountPaid(itemDao.getTotalPrice(cartObj.getCartId()));
@@ -357,6 +344,6 @@ public class CartController {
 		User userObj=userDao.getUser(userEmail);
 		emailService.sendThankuMsg(userObj, "Your order has been processed succesfully. Order id is "+o.getOrderId());
 		return mv;
-	
 	}
+	
 }

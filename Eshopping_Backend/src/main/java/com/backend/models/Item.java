@@ -12,13 +12,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name="CartItem")
 public class Item {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int itemId;
+	
 	private String customerId;
 	private double price;
 	private int quantity;
-	
 	
 	@OneToOne
 	@JoinColumn(name="productId")

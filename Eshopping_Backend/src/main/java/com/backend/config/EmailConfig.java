@@ -21,13 +21,11 @@ public class EmailConfig {
 		mailSender.setUsername("gagan123qwe@gmail.com");
 		mailSender.setPassword("gagan@135");
 		mailSender.setJavaMailProperties(getMailProperties());
-		
 		return mailSender;
 	}
 
 	private Properties getMailProperties() {
 		Properties mailProperties=new Properties();
-		
 		mailProperties.put("mail.transport.protocol", "smtp");
 		mailProperties.put("mail.smtp.auth", "true");
 		mailProperties.put("mail.smtp.starttls.enable", "true");
@@ -35,6 +33,6 @@ public class EmailConfig {
 		mailProperties.put("mail.debug", "true");
 		return mailProperties;
 	}
-	
+
 }
 

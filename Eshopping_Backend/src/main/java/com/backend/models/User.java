@@ -1,4 +1,4 @@
- 	package com.backend.models;
+package com.backend.models;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,8 +19,6 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-
-
 @Entity
 @Table(name="UserTableNew")
 public class User {
@@ -30,8 +28,21 @@ public class User {
 	@Email(message="Email must include @ and .")
 	private String email;
 	
-	//@NotEmpty(message="Password is mandatory")
 	private String password;
+
+	@Transient 
+	private String password2;
+	
+	@NotEmpty(message="First Name is mandatory")
+	private String firstName;
+	
+	private String lastName;
+	private String mobileNo;
+	private boolean enabled;
+	private String role;
+ 
+	@OneToMany(mappedBy="userObj",cascade=CascadeType.REMOVE,fetch=FetchType.EAGER)
+	private List<Address> address=new ArrayList<>();
 	
 	public String getPassword2() {
 		return password2;
@@ -40,24 +51,7 @@ public class User {
 	public void setPassword2(String password2) {
 		this.password2 = password2;
 	}
-	@Transient 
-	private String password2;
 	
-	@NotEmpty(message="First Name is mandatory")
-	private String firstName;
-	private String lastName;
-	
-	//@NotEmpty(message="Mobile Number is mandatory")
-	//@Size(min=10,max=10,message="Mobile Number must be of 10 digits")
-	private String mobileNo;
-	
-	private boolean enabled;
- 
-	@OneToMany(mappedBy="userObj",cascade=CascadeType.REMOVE,fetch=FetchType.EAGER)
-	private List<Address> address=new ArrayList<>();
-	
-	
-
 	public List<Address> getAddress() {
 		return address;
 	}
@@ -81,7 +75,6 @@ public class User {
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
-	private String role;
 	
 	public String getRole() {
 		return role;
@@ -90,31 +83,37 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
 	public String getPassword() {
 		return password;
 	}
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	public String getFirstName() {
 		return firstName;
 	}
+	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
 	public String getLastName() {
 		return lastName;
 	}
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
-	
-	
 }

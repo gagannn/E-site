@@ -15,7 +15,7 @@ public class PaymentDaoImpl implements PaymentDao {
 
 	@Autowired
 	SessionFactory SessionFactory;
-	
+
 	@Override
 	public boolean addPayment(Payment payment) {
 		try {

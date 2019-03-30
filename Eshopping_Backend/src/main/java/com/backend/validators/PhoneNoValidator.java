@@ -24,7 +24,6 @@ public class PhoneNoValidator implements Validator{
 		if(user.getMobileNo().length()>10 ||  user.getMobileNo().length()<10) {
 			errors.rejectValue("mobileNo", "notvalid.phone");
 		}
-		
 	}
 
 }

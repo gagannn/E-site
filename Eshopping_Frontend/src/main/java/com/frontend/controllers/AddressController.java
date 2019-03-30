@@ -54,7 +54,6 @@ public class AddressController {
 		List<Address> address=addressDao.getAddressForUser(email);
 		if(address.size()==0) {
 			mv.addObject("msg","No addresses found");
-
 		}
 		else {
 			mv.addObject("address", address);
@@ -85,7 +84,6 @@ public class AddressController {
 	public ModelAndView addAddress(@Valid@ModelAttribute("key1")Address address,BindingResult result) {
 
 		if(result.hasErrors()) {
-
 			ModelAndView mv=new ModelAndView("AddressForm");
 			mv.addObject("key1",address);
 			mv.addObject("btnLabel","Add Address");
@@ -117,35 +115,31 @@ public class AddressController {
 			return mv;
 		}
 		else {
-			
-		
-		Principal p=request.getUserPrincipal();
-		String userEmail=p.getName();
-		//Cart cartObj=cartDao.getCartByCustomer(userEmail);
-		//address.setCart(cartObj);
-		User objj=(User) session.getAttribute("userObject");
-		address.setUserObj(objj);
-		boolean b=addressDao.insertAddress(address);
+			Principal p=request.getUserPrincipal();
+			String userEmail=p.getName();
+			//Cart cartObj=cartDao.getCartByCustomer(userEmail);
+			//address.setCart(cartObj);
+			User objj=(User) session.getAttribute("userObject");
+			address.setUserObj(objj);
+			boolean b=addressDao.insertAddress(address);
 		}
 		mv.addObject("message","Address Inserted Succesfully...");
 		String email=(String) session.getAttribute("userEmail");
 		List<Address> addresss=addressDao.getAddressForUser(email);
 		if(addresss.size()==0) {
 			mv.addObject("msg","No addresses found");
-
 		}
 		else {
 			mv.addObject("address", addresss);
 		}
 		return mv;	
 	}
-	
+
 	@RequestMapping(value="/addToCart/addressForm/{id}",method=RequestMethod.GET)
 	public ModelAndView editAddress(@PathVariable("id")int addId){
 		Address obj=addressDao.getAddressById(addId);
 		ModelAndView mv=new ModelAndView("AddressForm");
 		mv.addObject("key1",obj);
-		
 		List<Category> categories=categoryDao.getAllCategories();
 		mv.addObject("categoriesList",categories);
 		List<Product> products=productDao.getAllProducts();
@@ -154,9 +148,9 @@ public class AddressController {
 		mv.addObject("formLabel","Edit Address Form");
 		mv.addObject("op","Edit");
 		return mv;
-		
+
 	}
-	
+
 	@RequestMapping(value="/addToCart/deleteAddress/{id}",method=RequestMethod.GET)
 	public ModelAndView deleteAddress(@PathVariable("id")int addId){
 		Address obj=addressDao.getAddressById(addId);
@@ -166,7 +160,6 @@ public class AddressController {
 		List<Address> address=addressDao.getAddressForUser(email);
 		if(address.size()==0) {
 			mv.addObject("msg","No addresses found");
-
 		}
 		else {
 			mv.addObject("address", address);
@@ -178,4 +171,5 @@ public class AddressController {
 		mv.addObject("message","Address Deleted Succesfully...");
 		return mv;
 	}
+	
 }

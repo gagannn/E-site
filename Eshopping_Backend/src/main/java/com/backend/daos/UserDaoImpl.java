@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import com.backend.models.User;
 
-
 @Repository("userDao")
 @Transactional
 public class UserDaoImpl implements UserDao {

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 import com.backend.models.Category;
 import com.backend.models.Product;
 
-
 @Repository("productDao")
 @Transactional
 public class ProductDaoImpl implements ProductDao {
@@ -28,7 +27,6 @@ public class ProductDaoImpl implements ProductDao {
 
 	public boolean addProduct(Product product) {
 		try{
-			//System.out.println("I m in addProduct method of Dao");
 			Session session=SessionFactory.getCurrentSession();
 			session.save(product);
 			return true;
@@ -112,7 +110,7 @@ public class ProductDaoImpl implements ProductDao {
 			pp.put(obj,getProduct(obj));
 		}
 		return pp;
-		
+
 	}
 
 	@Override
@@ -122,9 +120,9 @@ public class ProductDaoImpl implements ProductDao {
 		int i = 0;
 		for(Product obj : c.getProducts())
 		{
-		    if (i == item)
-		       return obj;
-		    i++;
+			if (i == item)
+				return obj;
+			i++;
 		}
 		return null;
 	}
@@ -142,10 +140,10 @@ public class ProductDaoImpl implements ProductDao {
 						p.add(prod);
 						count++;
 					}
-						
 				}
 			}
 		}
 		return p;
 	}
+	
 }

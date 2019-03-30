@@ -12,18 +12,16 @@
 	rel="stylesheet">
 <jsp:include page="header.jsp" />
 <div class="container">
-
-
-	<br /> <img style="margin-left:-45px!important;"
+	<br /> <img style="margin-left: -45px !important;"
 		src="${pageContext.request.contextPath}/resources/images/OrderPlaced.png"
 		style="margin-left: 155px;">
 	<p>
-		<a href="${contextRoot}/" style="text-decoration:none!important;">
+		<a href="${contextRoot}/" style="text-decoration: none !important;">
 			<button type="button" class="btn btn-primary btn-lg  my"
 				style="margin: auto; display: block; margin-bottom: 50px;">
 				Continue Shopping <span class="glyphicon glyphicon-arrow-right"></span>
 			</button>
 		</a>
 	</p>
-	</div>
+</div>
 <jsp:include page="Footer.jsp" />

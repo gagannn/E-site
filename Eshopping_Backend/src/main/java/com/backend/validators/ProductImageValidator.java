@@ -13,6 +13,7 @@ public class ProductImageValidator implements Validator{
 	public boolean supports(Class img) {
 		return Product.class.isAssignableFrom(img);
 	}
+	
 	@Override
 	public void validate(Object target, Errors error) {
 		Product product = (Product)target;

@@ -1,7 +1,5 @@
 package com.backend.config;
 
-
-
 import java.util.Properties;
 import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
@@ -35,8 +33,6 @@ import com.backend.validators.PhoneNoValidator;
 import com.backend.validators.ProductImageValidator;
 import com.backend.validators.SupplierValidator;
 
-
-
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages={"com.backend.config","com.backend.daos","com.backend.models"})
@@ -44,26 +40,25 @@ public class DBConfig {
 
 	@Bean(name="dataSource")
 	public DataSource getDataSource(){
-	DriverManagerDataSource dataSource=new DriverManagerDataSource();	
-	dataSource.setDriverClassName("org.h2.Driver");
-	dataSource.setUrl("jdbc:h2:tcp://localhost/~/test");
-	dataSource.setUsername("sa");
-	dataSource.setPassword("");
-	return dataSource;
+		DriverManagerDataSource dataSource=new DriverManagerDataSource();	
+		dataSource.setDriverClassName("org.h2.Driver");
+		dataSource.setUrl("jdbc:h2:tcp://localhost/~/test");
+		dataSource.setUsername("sa");
+		dataSource.setPassword("");
+		return dataSource;
 	}
-	
+
 	@Bean(name="passwordEncoder")
 	public PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean(name="sessionFactory")
 	public SessionFactory getSessionFactory(){
 		Properties p=new Properties();
 		p.setProperty("hibernate.dialect","org.hibernate.dialect.H2Dialect");
 		p.setProperty("hibernate.hbm2ddl.auto", "update");
 		p.setProperty("hibernate.show_sql","true");
-		
 		LocalSessionFactoryBuilder sb=new LocalSessionFactoryBuilder(getDataSource());
 		sb.addProperties(p);
 		sb.scanPackages("com.mybackend.daos","com.mybackend.models");
@@ -87,11 +82,11 @@ public class DBConfig {
 		sb.addAnnotatedClass(PaymentValidator.class);
 		return sb.buildSessionFactory();
 	}
-	
+
 	@Bean(name="hibernateTransaction")
 	@Autowired
 	public HibernateTransactionManager getHibernateTransactionManager(SessionFactory sessionFactory){
-	HibernateTransactionManager txManager=new HibernateTransactionManager(sessionFactory);
-	return txManager;
+		HibernateTransactionManager txManager=new HibernateTransactionManager(sessionFactory);
+		return txManager;
 	}
 }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.backend.models.User;
 
-
-
 @Service( value="emailService")
 public class EmailService {
 

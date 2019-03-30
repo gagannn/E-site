@@ -89,6 +89,4 @@ public class Payment {
 		this.order = order;
 	}
 	
-	
-	
 }

@@ -37,7 +37,6 @@ public class ItemDaoImpl implements ItemDao {
 	public boolean updateItem(Item item) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-
 			session.update(item);
 			return true;
 		}
@@ -69,7 +68,6 @@ public class ItemDaoImpl implements ItemDao {
 			Query query=session.createQuery("from Item where customerId=:a and product.productId=:b");
 			query.setParameter("a",customerId);
 			query.setParameter("b",productId);
-
 			List<Item> items=query.getResultList();
 			System.out.println("list = "+items);
 			if(items.size()==0){

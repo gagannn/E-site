@@ -17,12 +17,10 @@ public class SupplierValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-Product product = (Product)target;
-		
+		Product product = (Product)target;
 		ValidationUtils.rejectIfEmpty(errors, "supplierId", "required.selectSupplier");
-		
 		if(product.getSupplierId()==0) {
-		errors.rejectValue("supplierId", "required.selectSupplier");
+			errors.rejectValue("supplierId", "required.selectSupplier");
 		}
 	}
 

@@ -16,18 +16,18 @@ import javax.persistence.Table;
 
 @Entity
 public class OrderItems {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int orderItemsId;
-	
+
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="productId")
 	private Product productObj;
-	
+
 	private int quantity;
 	private double itemPrice;
-	
+
 	@ManyToOne
 	@JoinColumn(name="orderId")
 	private Order orderObj;
@@ -40,9 +40,6 @@ public class OrderItems {
 		this.orderItemsId = orderItemsId;
 	}
 
-	
-
-	
 	public Product getProductObj() {
 		return productObj;
 	}
@@ -74,6 +71,5 @@ public class OrderItems {
 	public void setOrderObj(Order orderObj) {
 		this.orderObj = orderObj;
 	}
-	
-	
+
 }

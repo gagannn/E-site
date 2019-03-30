@@ -16,46 +16,38 @@ import javax.persistence.Table;
 @Entity
 @Table(name="CartTable")
 public class Cart {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-     private int cartId;
+    private int cartId;
+	
 	private String customerId;
 		
 	@OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.EAGER,mappedBy="cart")
 	Collection<Item> items=new ArrayList<>();
-
-
+	
 	public int getCartId() {
 		return cartId;
 	}
-
 
 	public void setCartId(int cartId) {
 		this.cartId = cartId;
 	}
 
-
 	public String getCustomerId() {
 		return customerId;
 	}
-
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
 	}
 
-
-	
-
-
 	public Collection<Item> getItems() {
 		return items;
 	}
-
 
 	public void setItems(Collection<Item> items) {
 		this.items = items;
 	}
 	
-
 }

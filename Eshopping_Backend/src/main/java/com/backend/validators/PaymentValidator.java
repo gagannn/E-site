@@ -28,7 +28,6 @@ public class PaymentValidator implements Validator {
 		if((!pay.getCardNo().isEmpty())&&(String.valueOf(pay.getCardNo()).length()!=16)) {
 			errors.rejectValue("cardNo", "cardno.size");
 		}
-		
 	}
 
 }

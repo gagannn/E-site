@@ -15,18 +15,18 @@ public class OrderDaoImpl implements OrderDao {
 
 	@Autowired
 	SessionFactory SessionFactory;
-	
+
 	@Override
 	public int makeOrder(Order order) {
 		try{
 			Session session=SessionFactory.getCurrentSession();
-		session.save(order);
-		return 1;
-	}
-	catch(Exception e){
-		e.printStackTrace();
-	}
-	return 0;
+			session.save(order);
+			return 1;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

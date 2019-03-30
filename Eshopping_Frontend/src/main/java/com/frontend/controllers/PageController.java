@@ -29,43 +29,38 @@ public class PageController {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Autowired
 	ProductDao productDao;
-	
+
 	@Autowired
 	CategoryDao categoryDao;
-	
+
 	@Autowired
 	private HttpServletRequest request;	
-	
+
 	@Autowired
 	CartDao cartDao;
-	
+
 	@RequestMapping(value="/",method=RequestMethod.GET)
 	public ModelAndView getHomePage(){
 		Principal p=request.getUserPrincipal();
-		
-		
 		if(p!=null){
 			System.out.println("Principal active");
-	
-		String email=p.getName();
-		User userObj=userDao.getUser(email);
-		HttpSession session=request.getSession();
-		session.setAttribute("userEmail", email);
-		session.setAttribute("userObject",userObj);
-		int size=0;
-		Cart cartObj=cartDao.getCartByCustomer(email);
-		
-		if(cartObj!=null){
-		Collection<Item> items=cartObj.getItems();
-		for(Item item:items){
-			size=size+item.getQuantity();
-		}
-		}
-		
-		session.setAttribute("items",size);
+			String email=p.getName();
+			User userObj=userDao.getUser(email);
+			HttpSession session=request.getSession();
+			session.setAttribute("userEmail", email);
+			session.setAttribute("userObject",userObj);
+			int size=0;
+			Cart cartObj=cartDao.getCartByCustomer(email);
+			if(cartObj!=null){
+				Collection<Item> items=cartObj.getItems();
+				for(Item item:items){
+					size=size+item.getQuantity();
+				}
+			}
+			session.setAttribute("items",size);
 		}
 		ModelAndView mv=new ModelAndView("HomePage");
 		List<Category> categories=categoryDao.getAllCategories();
@@ -80,20 +75,17 @@ public class PageController {
 		mv.addObject("fourProducts",fourProducts);
 		return mv;
 	}
-	
+
 	@RequestMapping(value="/access-denied",method=RequestMethod.GET)
 	public String getAccessDenied(){
 		return "ErrorPage";
-		
 	}
-		
 
 	@RequestMapping(value="/errorPage",method=RequestMethod.GET)
 	public String getErrorPage(){
 		return "redirect:/login?error";
-		
 	}
+	
 }
 
 
-	

@@ -13,7 +13,7 @@ import com.backend.models.OrderItems;
 @Repository("orderItemsDao")
 @Transactional
 public class OrderItemsimpl implements OrderItemsDao {
-	
+
 	@Autowired
 	SessionFactory SessionFactory;
 
@@ -28,7 +28,7 @@ public class OrderItemsimpl implements OrderItemsDao {
 			e.printStackTrace();
 		}
 		return false;
-	
+
 	}
 
 }

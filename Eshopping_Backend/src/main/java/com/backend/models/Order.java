@@ -17,6 +17,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="OrderTable_04")
 public class Order {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int orderId;
@@ -24,7 +25,6 @@ public class Order {
 	@OneToOne
 	@JoinColumn(name="email")
 	private User user; 
-	
 	
 	@OneToOne
 	@JoinColumn(name="id")
@@ -39,16 +39,13 @@ public class Order {
 		return totalAmountPaid;
 	}
 
-
 	public void setTotalAmountPaid(double totalAmountPaid) {
 		this.totalAmountPaid = totalAmountPaid;
 	}
 
-
 	public Set<OrderItems> getItems() {
 		return items;
 	}
-
 
 	public void setItems(Set<OrderItems> items) {
 		this.items = items;
@@ -58,26 +55,21 @@ public class Order {
 		return orderId;
 	}
 
-
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
-
 
 	public User getUser() {
 		return user;
 	}
 
-
 	public void setUser(User user) {
 		this.user = user;
 	}
 
-
 	public Address getAddress() {
 		return address;
 	}
-
 
 	public void setAddress(Address address) {
 		this.address = address;
